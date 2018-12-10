@@ -20,25 +20,17 @@
     </a>
 
     <div class="container">
-        <a class="navbar-brand" href="/seatMap/index.php">Seat Map Management</a>
+        <a class="navbar-brand" href="/seatMap/controllers/index.php">Seat Map Management</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#mobile-nav">
             <span class="navbar-toggler-icon"></span>
         </button>
 
-        <div class="collapse navbar-collapse" id="mobile-nav">
-            <ul class="navbar-nav mr-auto">
-                <li class="nav-item">
-                    <a class="nav-link" href="#"> Documents
-                    </a>
-                </li>
-            </ul>
-        </div>
     </div>
 </nav>
 
 <!-- Site position -->
 <span class="badge badge-light">
-    <a class="link" href="../index.php">Homepage</a> / login
+    <a class="link" href="/seatmap/controllers/index.php">Homepage</a> / login
 </span>
 
 <!-- Login -->
@@ -85,7 +77,7 @@
 </div>
 
 <!-- Footer -->
-<footer class="bg-dark text-white mt-5 p-4 text-center">
+<footer class="bg-dark text-white mt-5 p-4 text-center fixed-bottom">
     Copyright &copy; 2018 Le Nhat Thanh
 </footer>
 

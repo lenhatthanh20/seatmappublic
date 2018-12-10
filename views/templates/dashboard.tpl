@@ -15,7 +15,7 @@
     <title>Seat-map management</title>
 
 </head>
-<body>
+<body style="height: 100%;">
 <!-- Navbar -->
 <nav class="navbar navbar-expand-sm navbar-dark bg-dark mb-4">
 
@@ -23,7 +23,7 @@
     <button id="showSeatmap" type="button" class="btn btn-default" style="margin-left:15px;">Show Seatmap</button>
 
     <div class="container">
-        <a class="navbar-brand" href="/seatMap/index.php">Seat Map Management</a>
+        <a class="navbar-brand" href="/seatMap/controllers/index.php">Seat Map Management</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#mobile-nav">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -75,7 +75,7 @@
     <script>alert($messsage)</script>
 {/if}
 
-<div class="login">
+<div class="login" style="min-height: 720px">
         <div class="row" style="max-width: 100%;">
             <div id="sidebarCustom" class="col-2 fbox" style="left:0px; position: inherit;">
                 <div class="card text-white bg-dark mb-3" style="max-height: 83%;overflow-y: auto;height: auto;margin-top: -15px;border-radius:0px;">
@@ -110,7 +110,7 @@
                 <!--/.card -->
             </div>
 
-            <div id="seatmapCustom" class="col-10 p-0">
+            <div id="seatmapCustom" class="col-10">
                 <div id="backgroundImage" data-seatmapID="{$arrayAllSeatmap[0][0]}" data-seatmapPath="{$arrayAllSeatmap[0][1]}" class="w-100 h-75" style="background-image: url('{$arrayAllSeatmap[0][1]}');">
                 </div>
 
