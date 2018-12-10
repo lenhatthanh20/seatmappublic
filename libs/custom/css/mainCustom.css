@@ -1,0 +1,211 @@
+footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+}
+
+#closebtn {
+    position: absolute;
+    top: 0;
+    right: 25px;
+    font-size: 36px;
+    margin-left: 50px;
+}
+
+/* Custom scrollbar */
+/* width */
+::-webkit-scrollbar {
+    width: 8px !important;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    background: #f1f1f1 !important;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: #888 !important;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: #555 !important;
+}
+
+/*
+ * Component: Users List
+ * ---------------------
+ */
+.users-list > div > li {
+    float: left;
+   /* padding: 10px; */
+    text-align: center;
+}
+
+.users-list > div > li img {
+    border-radius: 50%;
+    max-width: 100%;
+    margin-left: 20px;
+}
+
+.users-list > div >li > a:hover,
+.users-list > div > li > a:hover .users-list-name {
+    color: #999;
+}
+
+.users-list-name,
+.users-list-date {
+    display: block;
+}
+
+.users-list-name {
+    font-size: 0.775rem;
+    color: #fff;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.users-list-date {
+    color: #999;
+    font-size: 12px;
+}
+
+.users-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.removeUser {
+    position: absolute;
+    top: 0px;
+    right: -15px;
+    z-index: 100;
+    background-color: #FFF;
+    padding: 3px 2px 7px 2px;
+    color: #000;
+    font-weight: bold;
+    cursor: pointer;
+    opacity: .2;
+    text-align: center;
+    font-size: 22px;
+    line-height: 10px;
+    border-radius: 50%;
+    border: none;
+    margin: 10px;
+}
+.removeUser:hover {
+    opacity: 1;
+}
+
+#removeOutOfSeatmap {
+    position: absolute;
+    top: 0px;
+    right: -15px;
+    z-index: 100;
+    background-color: #FFF;
+    padding: 3px 2px 7px 2px;
+    color: #000;
+    font-weight: bold;
+    cursor: pointer;
+    opacity: .2;
+    text-align: center;
+    font-size: 22px;
+    line-height: 10px;
+    border-radius: 50%;
+    border: none;
+    margin: 10px;
+}
+#removeOutOfSeatmap:hover {
+    opacity: 1;
+}
+
+.removeSeatmap {
+    position: relative;
+    top: -12px;
+    right: 20px;
+    z-index: 100;
+    background-color: #ad9090;
+    padding: 3px 2px 7px 2px;
+    color: #000;
+    font-weight: bold;
+    cursor: pointer;
+    opacity: .2;
+    text-align: center;
+    font-size: 22px;
+    line-height: 10px;
+    border-radius: 50%;
+    border: none;
+    margin: 10px;
+}
+.removeSeatmap:hover {
+    opacity: 1;
+}
+
+.col {
+    max-height: 200px !important;
+}
+
+.hoverEffect > form > button {
+    opacity: 0;
+    pointer-events: none;
+    transition: 0.2s;
+}
+
+.hoverEffect:hover > form > button  {
+    opacity: 1;
+    pointer-events: auto;
+    transition: 0.2s;
+}
+
+.ui-draggable-helper {
+    border-radius: 100%;
+}
+
+.drapProfile {
+    position: relative;
+    display: inline-block;
+}
+
+
+/*
+ * Component: Users List
+ * ---------------------
+ */
+.dropped {
+    float: left;
+    /* padding: 10px; */
+    text-align: center;
+}
+
+.dropped img {
+    border-radius: 50%;
+    max-width: 50%;
+    margin-left: 20px;
+    max-height: 54px;
+}
+
+.dropped > a:hover,
+.dropped > a:hover .users-list-name {
+    color: #999;
+}
+
+.dragged {
+    float: left;
+    /* padding: 10px; */
+    text-align: center;
+}
+
+.dragged img {
+    border-radius: 50%;
+    max-width: 50%;
+    margin-left: 20px;
+    max-height: 54px;
+}
+
+.dragged > a:hover,
+.dragged > a:hover .users-list-name {
+    color: #999;
+}
