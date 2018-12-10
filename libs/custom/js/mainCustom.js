@@ -473,7 +473,7 @@ function callDragAndDrop() {
         start: function (event, ui) {
             $(ui.helper).addClass("ui-helper");
             if ($(this).hasClass('dragged')) {
-                $(this).detach();
+               // $(this).detach();
             }
         },
         helper: function () {
@@ -537,7 +537,39 @@ function callDragAndDrop() {
             } else { // if id is not exist in arrayJSON --> add new record in arrayJSON
                 arrayJSON.push({'id': id, 'x': x, 'y': y, 'seatmapID': currentSeatmapId, 'path': path, 'name': name});
             }
-        }
+        },
+
+        /*out: function(event, ui) {
+            $(ui.helper).mouseup(function() {
+                var id = $(ui.draggable).attr('data-id'); // ID to save to JSON object
+                var path = $(ui.draggable).attr('data-path'); // Path to save to JSON object
+                var name = $(ui.draggable).attr('data-name');// Name to save to JSON object
+                var x = $(ui.draggable).css('left'); // x to save to JSON object
+                x = x.replace("px", "");
+                var y = $(ui.draggable).css('top'); // y to save to JSON object
+                y = y.replace("px", "");
+                ui.draggable.remove();
+                $('.users-list').append(
+                    '<div class="drapProfile fixBugCanNotDrap">\n' +
+                    '    <li class="drapProfile fixBugCanNotDrap" data-id="'+id+'" data-path="'+path+'" data-name="'+name+'">\n' +
+                    '        <form method="post" action="deleteUser.php">\n' +
+                    '             <input type="hidden" name="id" value="'+id+'">\n' +
+                    '             <input type="hidden" name="path" value="'+path+'">\n' +
+                    '             <button type="submit" data-user-name="'+name+'" class="removeUser">&times;</button>\n' +
+                    '        </form>\n' +
+                    '        <img src="'+path+'" height="90px" width="90px" Image">\n' +
+                    '        <a href="updateUser.php?id='+id+'"><p class="users-list-name">'+name+'</p></a>\n' +
+                    '     </li>\n' +
+                    '</div>'
+                );
+
+                initDragForClass('fixBugCanNotDrap');
+                $('.fixBugCanNotDrap').removeClass('fixBugCanNotDrap');
+            });
+        },
+        over: function(event, ui) {
+            ui.draggable.remove();
+        }*/
     });
 }
 
