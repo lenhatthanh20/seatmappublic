@@ -1,8 +1,8 @@
 <?php
 
-require_once('libs/custom/smarty/smartyConfig.php');
-require_once('models/Profile.php');
-require_once('models/Seatmap.php');
+require_once('../libs/custom/smarty/smartyConfig.php');
+require_once('../models/Profile.php');
+require_once('../models/Seatmap.php');
 
 
 $profile = new Profile();
