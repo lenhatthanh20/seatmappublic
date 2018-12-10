@@ -20,77 +20,6 @@ var coordinateJSONObject = {
     //}
 };
 
-function callDragAndDrop() {
-    $(".drapProfile").draggable({
-        cursor: "crosshair",
-        revert: "invalid",
-        zIndex: 1000,
-        start: function (event, ui) {
-            $(ui.helper).addClass("ui-helper");
-            if ($(this).hasClass('dragged')) {
-                $(this).detach();
-            }
-        },
-        helper: function () {
-            return jQuery(this).clone().appendTo('body');
-        },
-        stop: function (event, ui) {
-
-        },
-        drag: function (event, ui) {
-
-        },
-        containment: "document"
-    });
-
-    $("#backgroundImage").droppable({
-        activeClass: 'ui-state-hover',
-        accept: '.drapProfile',
-        drop: function (e, ui) {
-
-            var id = $(ui.draggable).attr('data-id'); // ID to save to JSON object
-            var path = $(ui.draggable).attr('data-path'); // Path to save to JSON object
-            var name = $(ui.draggable).attr('data-name');// Name to save to JSON object
-            var x = null; // x to save to JSON object
-            var y = null; // y to save to JSON object
-
-            if (!ui.draggable.hasClass("dropped")) {
-                //debugger;
-                var parentOffset = jQuery('#backgroundImage').offset();
-                var dropped = jQuery(ui.draggable).clone().css('position', 'absolute').addClass("dropped").draggable(
-                    {revert: "invalid"}
-                );
-
-                dropped.css('left', (ui.position.left - parentOffset.left) + 'px');
-                dropped.css('top', (ui.position.top - parentOffset.top) + 'px');
-
-                x = ui.position.left - parentOffset.left; // x to save to JSON object
-                y = ui.position.top - parentOffset.top;
-
-                $(dropped).appendTo($(this));
-
-                $(dropped).children('form').replaceWith(
-                    '<form>\n' +
-                    '    <button id="removeOutOfSeatmap" type="button" data-user-id="' + id + '">×</button>\n' +
-                    '  </form>'
-                );
-
-                $(ui.draggable).detach();
-            } else {
-                x = ui.position.left;
-                y = ui.position.top;
-            }
-
-            /* Save to main JSON object */
-            if (hasId(arrayJSON, id)) { // if id is exist in arrayJSON --> modify x, y
-                findAndReplace(arrayJSON, id, x, y);
-            } else { // if id is not exist in arrayJSON --> add new record in arrayJSON
-                arrayJSON.push({'id': id, 'x': x, 'y': y, 'seatmapID': currentSeatmapId, 'path': path, 'name': name});
-            }
-        }
-    });
-}
-
 /**
  * @method: Load all profiles to all seatmaps
  * @param: arraySeatmap: store all profile from database
@@ -113,6 +42,7 @@ function loadAllProfileToSeatmap(arraySeatmap, seatmapID) {
             );
         }
     }
+    callDragAndDrop();
 }
 
 /**
@@ -130,8 +60,18 @@ function loadingProfileFromDatabase(seatmapID) {
 
                 if(response[i][6] && response[i][5]){
                     var position = JSON.parse(response[i][5]);
-                    if (response[i][6].toString() === seatmapID.toString()) {
-                        showArrayJSON.push({
+                    if(seatmapID !== undefined){
+                        if (response[i][6].toString() === seatmapID.toString()) {
+                            showArrayJSON.push({
+                                'id': response[i][0],
+                                'x': position.x,
+                                'y': position.y,
+                                'seatmapID': response[i][6],
+                                'path': response[i][3],
+                                'name': response[i][1]
+                            });
+                        }
+                        tempArrayJSON.push({
                             'id': response[i][0],
                             'x': position.x,
                             'y': position.y,
@@ -140,14 +80,6 @@ function loadingProfileFromDatabase(seatmapID) {
                             'name': response[i][1]
                         });
                     }
-                    tempArrayJSON.push({
-                        'id': response[i][0],
-                        'x': position.x,
-                        'y': position.y,
-                        'seatmapID': response[i][6],
-                        'path': response[i][3],
-                        'name': response[i][1]
-                    });
                 }
             }
             loadAllProfileToSeatmap(showArrayJSON, seatmapID);
@@ -176,6 +108,7 @@ $(document).ready(function () {
     callDragAndDrop();
     /* Show and Hide left sidebar */
     $('#showSidebar').click(function () {
+        $('#seatmapCustom').css('margin-left', '0px');
         var n = $("#sidebarCustom").css("left");
         if (n === '0px') {
             //$('#backgroundImage').css('margin-left', '6px');
@@ -314,34 +247,6 @@ $(document).ready(function () {
         callDragAndDrop();
     });
 
-    $(document).on("click", "#saveToSeatmap", function () {
-        console.log(tempArrayJSON);
-        if (arrayJSON.length) {
-            $.post('saveProfileToSeatmap.php',
-                {
-                    jsonObject: JSON.stringify(arrayJSON)
-                },
-                function (response) {
-                    if (response == 1) {
-                        $.alert({
-                            title: 'SUCCESS',
-                            content: 'Save data successfully!',
-                        });
-                    } else {
-                        $.alert({
-                            title: 'ERROR',
-                            content: 'Can not save database!',
-                        });
-                    }
-                });
-        } else {
-            $.alert({
-                title: 'ERROR',
-                content: 'Nothing to save in database!',
-            });
-        }
-    });
-
     $(document).on("click", "#removeOutOfSeatmap", function () {
         var deleteID = $(this).attr('data-user-id');
         var thisRemove = $(this);
@@ -357,8 +262,8 @@ $(document).ready(function () {
                                 thisRemove.parentsUntil("div").remove();
                                 response = JSON.parse(response);
                                 $('.users-list').append(
-                                    '<div class="drapProfile">\n' +
-                                    '    <li class="drapProfile" data-id="'+response[0][0]+'" data-path="'+response[0][3]+'" data-name="'+response[0][1]+'">\n' +
+                                    '<div class="drapProfile fixBugCanNotDrap">\n' +
+                                    '    <li class="drapProfile fixBugCanNotDrap" data-id="'+response[0][0]+'" data-path="'+response[0][3]+'" data-name="'+response[0][1]+'">\n' +
                                     '        <form method="post" action="deleteUser.php">\n' +
                                     '             <input type="hidden" name="id" value="'+response[0][0]+'">\n' +
                                     '             <input type="hidden" name="path" value="'+response[0][3]+'">\n' +
@@ -369,11 +274,15 @@ $(document).ready(function () {
                                     '     </li>\n' +
                                     '</div>'
                                 );
-                                callDragAndDrop();
+
+                                initDragForClass('fixBugCanNotDrap');
+                                $('.fixBugCanNotDrap').removeClass('fixBugCanNotDrap');
 
                                 if(hasId(arrayJSON,response[0][0])){
                                     arrayJSON = arrayJSON.filter(function( obj ) {
-                                        return obj.id.toString() !== response[0][0].toString();
+                                        if(obj.id !== undefined && response[0][0] !== undefined){
+                                            return obj.id.toString() !== response[0][0].toString();
+                                        }
                                     });
                                 }
                                 if(hasId(tempArrayJSON,response[0][0])){
@@ -411,6 +320,41 @@ $(document).ready(function () {
         });
 
     });
+
+    $(document).on("click", "#saveToSeatmap", function () {
+        console.log(tempArrayJSON);
+        if (arrayJSON.length) {
+            $.post('saveProfileToSeatmap.php',
+                {
+                    jsonObject: JSON.stringify(arrayJSON)
+                },
+                function (response) {
+                    if (response == 1) {
+                        $.confirm({
+                            title: 'MESSAGE!',
+                            content: 'Click confirm to save all data',
+                            buttons: {
+                                confirm: function () {
+                                    location.reload();
+                                }
+                            }
+                        });
+                    } else {
+                        $.alert({
+                            title: 'ERROR!',
+                            content: 'Can not save database!',
+                        });
+                    }
+                });
+        } else {
+            $.alert({
+                title: 'ERROR',
+                content: 'Nothing to save in database!',
+            });
+        }
+
+    });
+
 });
 
 /* Remove seatmap */
@@ -437,6 +381,14 @@ function removeSeatmap(id, path) {
 
 /* Show Seatmap button */
 $('#showSeatmap').click(function () {
+
+    var n = $("#sidebarCustom").css("left");
+    if (n === '0px') {
+        $('#seatmapCustom').css('margin-left', '0px');
+    } else {
+        $('#seatmapCustom').css('margin-left', '15px');
+    }
+
     $.getJSON("viewSeatmap.php", function (data, status) {
         if ($('#backgroundImage').length) { // detect id backgroundImage is exist or not
             $('#backgroundImage').remove();
@@ -511,4 +463,104 @@ function findAndReplace(object, value, x, y) {
             //object["seatmapID"] = currentSeatmapId;
         }
     }
+}
+
+function callDragAndDrop() {
+    $(".drapProfile").draggable({
+        cursor: "crosshair",
+        revert: "invalid",
+        zIndex: 1000,
+        start: function (event, ui) {
+            $(ui.helper).addClass("ui-helper");
+            if ($(this).hasClass('dragged')) {
+                $(this).detach();
+            }
+        },
+        helper: function () {
+            return jQuery(this).clone().appendTo('body');
+        },
+        stop: function (event, ui) {
+
+        },
+        drag: function (event, ui) {
+
+        },
+        containment: "document"
+    });
+
+    $("#backgroundImage").droppable({
+        activeClass: 'ui-state-hover',
+        accept: '.drapProfile',
+        drop: function (e, ui) {
+
+            var id = $(ui.draggable).attr('data-id'); // ID to save to JSON object
+            var path = $(ui.draggable).attr('data-path'); // Path to save to JSON object
+            var name = $(ui.draggable).attr('data-name');// Name to save to JSON object
+            var x = null; // x to save to JSON object
+            var y = null; // y to save to JSON object
+
+            if (!ui.draggable.hasClass("dropped")) {
+                //debugger;
+                console.log('notDrop');
+                var parentOffset = jQuery('#backgroundImage').offset();
+                var dropped = jQuery(ui.draggable).clone().css('position', 'absolute').addClass("dropped").draggable(
+                    {
+                        revert: "invalid"
+                    }
+
+                );
+
+                dropped.css('left', (ui.position.left - parentOffset.left) + 'px');
+                dropped.css('top', (ui.position.top - parentOffset.top) + 'px');
+
+                x = ui.position.left - parentOffset.left; // x to save to JSON object
+                y = ui.position.top - parentOffset.top;
+
+                $(dropped).appendTo($(this));
+
+                $(dropped).children('form').replaceWith(
+                    '<form>\n' +
+                    '    <button id="removeOutOfSeatmap" type="button" data-user-id="' + id + '">×</button>\n' +
+                    '  </form>'
+                );
+
+                $(ui.draggable).detach();
+            } else {
+                console.log('Drop');
+                x = ui.position.left;
+                y = ui.position.top;
+            }
+
+            /* Save to main JSON object */
+            if (hasId(arrayJSON, id)) { // if id is exist in arrayJSON --> modify x, y
+                findAndReplace(arrayJSON, id, x, y);
+            } else { // if id is not exist in arrayJSON --> add new record in arrayJSON
+                arrayJSON.push({'id': id, 'x': x, 'y': y, 'seatmapID': currentSeatmapId, 'path': path, 'name': name});
+            }
+        }
+    });
+}
+
+function initDragForClass(className) {
+    $("." + className).draggable({
+        cursor: "crosshair",
+        revert: "invalid",
+        zIndex: 1000,
+        start: function (event, ui) {
+            $(ui.helper).addClass("ui-helper");
+            if ($(this).hasClass('dragged')) {
+                $(this).detach();
+            }
+        },
+        helper: function () {
+            return jQuery(this).clone().appendTo('body');
+        },
+        stop: function (event, ui) {
+
+        },
+        drag: function (event, ui) {
+
+        },
+        containment: "document"
+    });
 }
