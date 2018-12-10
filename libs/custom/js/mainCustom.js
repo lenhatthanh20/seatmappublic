@@ -87,20 +87,6 @@ function callDragAndDrop() {
             } else { // if id is not exist in arrayJSON --> add new record in arrayJSON
                 arrayJSON.push({'id': id, 'x': x, 'y': y, 'seatmapID': currentSeatmapId, 'path': path, 'name': name});
             }
-
-            /* Save to temp JSON object */
-            /*if (hasId(tempArrayJSON, id)) {
-                findAndReplace(tempArrayJSON, id, x, y);
-            } else {
-                tempArrayJSON.push({
-                    'id': id,
-                    'x': x,
-                    'y': y,
-                    'seatmapID': currentSeatmapId,
-                    'path': path,
-                    'name': name
-                });
-            }*/
         }
     });
 }
