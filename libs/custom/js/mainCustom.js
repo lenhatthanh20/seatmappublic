@@ -60,7 +60,7 @@ function callDragAndDrop() {
                 var dropped = jQuery(ui.draggable).clone().css('position', 'absolute').addClass("dropped").draggable(
                     {revert: "invalid"}
                 );
-                //Query(ui.draggable).detach();
+
                 dropped.css('left', (ui.position.left - parentOffset.left) + 'px');
                 dropped.css('top', (ui.position.top - parentOffset.top) + 'px');
 
@@ -396,20 +396,43 @@ $(document).ready(function () {
         //alert($(this).attr('data-user-id'));
     });
 
+    $(document).on("click", "#cancelSaveSeatmap", function () {
+        $.confirm({
+            title: 'MESSAGE',
+            content: 'Do you want to undo everything that changed?',
+            buttons: {
+                confirm: function () {
+                    location.reload();
+                },
+                cancel: function () {
+
+                }
+            }
+        });
+
+    });
 });
 
 /* Remove seatmap */
 function removeSeatmap(id, path) {
-    var result = confirm("Do you want to delete this seatmap ?");
-    if (result) {
-        $.post('deleteSeatmap.php',
-            {id: id, path: path},
-            function (data) {
-                $('#' + id).remove();
-            });
-    } else {
-        return false;
-    }
+    $.confirm({
+        title: 'WARNING!',
+        content: 'When you delete this seatmap, all profiles in this will be remove out of seatmap. Are you sure?',
+        buttons: {
+            confirm: function () {
+                $.post('deleteSeatmap.php',
+                    {id: id, path: path},
+                    function (data) {
+                        $('#' + id).remove();
+                        location.reload();
+                    }
+                );
+            },
+            cancel: function () {
+
+            }
+        }
+    });
 }
 
 /* Show Seatmap button */
