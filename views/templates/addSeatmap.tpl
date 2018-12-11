@@ -82,7 +82,7 @@
         <button type="button" class="btn btn-default">Go Back</button>
     </a>
     <div class="container">
-        <a class="navbar-brand" href="/seatMap/index.php">Seat Map Management</a>
+        <a class="navbar-brand" href="/seatmap/controllers/index.php">Seat Map Management</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#mobile-nav">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -126,7 +126,7 @@
         <a class="link" href="dashboard.php">Dashboard</a> / Add Seatmap
     </span>
 
-<div class="login">
+<div class="login" style="min-height: 720px;">
     <div class="container">
         <div class="row">
             <div class="col-md-5 m-auto">
@@ -186,7 +186,7 @@
 </div>
 
 <!-- Footer -->
-<footer class="bg-dark text-white mt-5 p-4 text-center">
+<footer class="bg-dark text-white mt-5 p-4 text-center fixed-bottom">
     Copyright &copy; 2018 Le Nhat Thanh
 </footer>
 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">

@@ -131,7 +131,7 @@
         <a class="link" href="dashboard.php">Dashboard</a> / Update Seatmap
     </span>
 
-<div class="login">
+<div class="login" style="min-height: 720px;">
     <div class="container">
         <div class="row">
             <div class="col-md-5 m-auto">
@@ -203,7 +203,7 @@
 </div>
 
 <!-- Footer -->
-<footer class="bg-dark text-white mt-5 p-4 text-center">
+<footer class="bg-dark text-white mt-5 p-4 text-center fixed-bottom">
     Copyright &copy; 2018 Le Nhat Thanh
 </footer>
 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">

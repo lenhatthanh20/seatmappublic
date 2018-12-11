@@ -9,17 +9,6 @@ var arrayJSON = [];
 /* Global JSON object to store all profile is loaded from database */
 var tempArrayJSON = [];
 
-/* Prototype of a record */
-var coordinateJSONObject = {
-    //'id': null,
-    //'seatmapID': null,
-    //'path': null
-    //'coordinate': {
-    //    'x': null,
-    //    'y': null
-    //}
-};
-
 /**
  * @method: Load all profiles to all seatmaps
  * @param: arraySeatmap: store all profile from database
@@ -101,7 +90,9 @@ function loadingProfileFromArrayJson(arrayJson, seatmapID) {
         }
     }
     loadAllProfileToSeatmap(temp, seatmapID);
-    callDragAndDrop();
+
+    //draggableElementLoadedInDatabase();
+    //callDragAndDrop();
 }
 
 $(document).ready(function () {
@@ -244,8 +235,9 @@ $(document).ready(function () {
             }
         }
         loadingProfileFromArrayJson(tempArrayJSON, currentSeatmapId);
+        droppableElementLoadedInDatabase();
         //loadAllProfileToSeatmap(arrayJSON, currentSeatmapId);
-        callDragAndDrop();
+        //callDragAndDrop();
     });
 
     $(document).on("click", "#removeOutOfSeatmap", function () {
@@ -437,7 +429,8 @@ $('#showSeatmap').click(function () {
                 }
             }
             loadingProfileFromArrayJson(tempArrayJSON, currentSeatmapId);
-            callDragAndDrop();
+            droppableElementLoadedInDatabase();
+            //callDragAndDrop();
         }
     });
 });
@@ -497,7 +490,7 @@ function callDragAndDrop() {
 
             if (!ui.draggable.hasClass("dropped")) {
                 //debugger;
-                console.log('notDrop');
+                //console.log('notDrop');
                 var parentOffset = jQuery('#backgroundImage').offset();
                 var dropped = jQuery(ui.draggable).clone().css('position', 'absolute').addClass("dropped").draggable(
                     {
@@ -522,7 +515,7 @@ function callDragAndDrop() {
 
                 $(ui.draggable).detach();
             } else {
-                console.log('Drop');
+                //console.log('Drop');
                 x = ui.position.left;
                 y = ui.position.top;
             }
@@ -601,5 +594,91 @@ function draggableElementLoadedInDatabase() {
         start: function (event, ui) {
             $(ui.helper).addClass("ui-helper");
         }
+    });
+}
+
+function droppableElementLoadedInDatabase() {
+    $("#backgroundImage").droppable({
+        activeClass: 'ui-state-hover',
+        accept: '.drapProfile',
+        drop: function (e, ui) {
+
+            var id = $(ui.draggable).attr('data-id'); // ID to save to JSON object
+            var path = $(ui.draggable).attr('data-path'); // Path to save to JSON object
+            var name = $(ui.draggable).attr('data-name');// Name to save to JSON object
+            var x = null; // x to save to JSON object
+            var y = null; // y to save to JSON object
+
+            if (!ui.draggable.hasClass("dropped")) {
+                //debugger;
+                //console.log('notDrop');
+                var parentOffset = jQuery('#backgroundImage').offset();
+                var dropped = jQuery(ui.draggable).clone().css('position', 'absolute').addClass("dropped").draggable(
+                    {
+                        revert: "invalid"
+                    }
+
+                );
+
+                dropped.css('left', (ui.position.left - parentOffset.left) + 'px');
+                dropped.css('top', (ui.position.top - parentOffset.top) + 'px');
+
+                x = ui.position.left - parentOffset.left; // x to save to JSON object
+                y = ui.position.top - parentOffset.top;
+
+                $(dropped).appendTo($(this));
+
+                $(dropped).children('form').replaceWith(
+                    '<form>\n' +
+                    '    <button id="removeOutOfSeatmap" type="button" data-user-id="' + id + '">×</button>\n' +
+                    '  </form>'
+                );
+
+                $(ui.draggable).detach();
+            } else {
+                //console.log('Drop');
+                x = ui.position.left;
+                y = ui.position.top;
+            }
+
+            /* Save to main JSON object */
+            if (hasId(arrayJSON, id)) { // if id is exist in arrayJSON --> modify x, y
+                findAndReplace(arrayJSON, id, x, y);
+            } else { // if id is not exist in arrayJSON --> add new record in arrayJSON
+                arrayJSON.push({'id': id, 'x': x, 'y': y, 'seatmapID': currentSeatmapId, 'path': path, 'name': name});
+            }
+        },
+
+        /*out: function(event, ui) {
+            $(ui.helper).mouseup(function() {
+                var id = $(ui.draggable).attr('data-id'); // ID to save to JSON object
+                var path = $(ui.draggable).attr('data-path'); // Path to save to JSON object
+                var name = $(ui.draggable).attr('data-name');// Name to save to JSON object
+                var x = $(ui.draggable).css('left'); // x to save to JSON object
+                x = x.replace("px", "");
+                var y = $(ui.draggable).css('top'); // y to save to JSON object
+                y = y.replace("px", "");
+                ui.draggable.remove();
+                $('.users-list').append(
+                    '<div class="drapProfile fixBugCanNotDrap">\n' +
+                    '    <li class="drapProfile fixBugCanNotDrap" data-id="'+id+'" data-path="'+path+'" data-name="'+name+'">\n' +
+                    '        <form method="post" action="deleteUser.php">\n' +
+                    '             <input type="hidden" name="id" value="'+id+'">\n' +
+                    '             <input type="hidden" name="path" value="'+path+'">\n' +
+                    '             <button type="submit" data-user-name="'+name+'" class="removeUser">&times;</button>\n' +
+                    '        </form>\n' +
+                    '        <img src="'+path+'" height="90px" width="90px" Image">\n' +
+                    '        <a href="updateUser.php?id='+id+'"><p class="users-list-name">'+name+'</p></a>\n' +
+                    '     </li>\n' +
+                    '</div>'
+                );
+
+                initDragForClass('fixBugCanNotDrap');
+                $('.fixBugCanNotDrap').removeClass('fixBugCanNotDrap');
+            });
+        },
+        over: function(event, ui) {
+            ui.draggable.remove();
+        }*/
     });
 }

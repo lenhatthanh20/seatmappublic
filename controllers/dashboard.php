@@ -13,7 +13,7 @@ global $_SESSION;
 if( isset($_SESSION["username"])) {
     $smarty->assign('username', $_SESSION["username"]);
 }else {
-    header('Location: ../index.php');
+    header('Location: /seatmap/controllers/index.php');
     die();
 }
 
