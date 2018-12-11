@@ -84,18 +84,12 @@
     </a>
 
     <div class="container">
-        <a class="navbar-brand" href="/seatMap/index.php">Seat Map Management</a>
+        <a class="navbar-brand" href="/seatmap/controllers/index.php">Seat Map Management</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#mobile-nav">
             <span class="navbar-toggler-icon"></span>
         </button>
 
         <div class="collapse navbar-collapse" id="mobile-nav">
-            <ul class="navbar-nav mr-auto">
-                <li class="nav-item">
-                    <a class="nav-link" href="#"> Documents
-                    </a>
-                </li>
-            </ul>
 
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item">

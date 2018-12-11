@@ -74,6 +74,17 @@ if(isset($_POST["username"]) && isset($_POST["email"])) {
     $_SESSION["keepName"] = $username;
     $_SESSION["keepEmail"] = $email;
 
+    /* Validation the length of name field */
+    $len = strlen($username);
+    if($len < 6){
+        array_push($error,  'Your name must be between 6 and 25 chars!');
+        $success = false;
+    }
+    elseif($len > 25){
+        array_push($error,  'Your name must be between 6 and 25 chars!');
+        $success = false;
+    }
+
     /* Validation empty username and email */
     if(empty($_POST['username'])){
         array_push($error,  'Your name is required!');

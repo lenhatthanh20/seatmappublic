@@ -80,6 +80,17 @@ if(isset($_POST['seatmapName']) && $uploadOk === 1) {
     $seatmapPath = $target_file;
     $smarty->assign('imagePath', $seatmapPath);
 
+
+    /* Validation length of seat map name */
+    $len = strlen($seatmapName);
+    if($len < 6){
+        array_push($error,  'Seat map name must be between 6 and 25 chars!');
+        $success = false;
+    }
+    elseif($len > 25){
+        array_push($error,  'Seat map name must be between 6 and 25 chars!');
+        $success = false;
+    }
     /* Validation empty seatmapName */
     if (empty($_POST['seatmapName'])) {
         array_push($error, 'Seatmap name is required!');

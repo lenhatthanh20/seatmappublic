@@ -21,12 +21,19 @@ if( isset($_SESSION["username"])) {
 
 /* For Get Request - Show information before updating */
 if (isset($_GET['id'])) {
-    $id = $_GET['id'];
+    $id = htmlspecialchars($_GET['id']);
+    $success = $profile->checkValidId($id);
+    if(!$success){
+        array_push($error, "ID is not valid!");
+        $success = false;
+    }
 
-    $arrayUser = $profile->selectProfile($id);
-    if($arrayUser === false) {
+    if($success === false) {
         // failure
+        $smarty->assign('error', $error);
+        $smarty->assign('success', $success);
     } else {
+        $arrayUser = $profile->selectProfile($id);
         $userName = $arrayUser[0][1];
         $email = $arrayUser[0][2];
         $imagePath = $arrayUser[0][3];
@@ -35,6 +42,8 @@ if (isset($_GET['id'])) {
         $smarty->assign('userName', $userName);
         $smarty->assign('email', $email);
         $smarty->assign('imagePath', $imagePath);
+
+
     }
     $smarty->display('updateUser.tpl');
     //header('Location: http://localhost/seatMap/controllers/dashboard.php');
@@ -52,6 +61,17 @@ if(isset($_POST["id"]) && isset($_POST["username"]) && isset($_POST["email"])) {
     $smarty->assign('userName', $username);
     $smarty->assign('email', $email);
     $smarty->assign('imagePath', $imagePath);
+
+    /* Validation the length of name field */
+    $len = strlen($username);
+    if($len < 6){
+        array_push($error,  'Your name must be between 6 and 25 chars!');
+        $success = false;
+    }
+    elseif($len > 25){
+        array_push($error,  'Your name must be between 6 and 25 chars!');
+        $success = false;
+    }
 
     /* Validation empty username and email */
     if(empty($_POST['username'])){

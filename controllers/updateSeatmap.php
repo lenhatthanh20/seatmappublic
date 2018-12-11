@@ -57,6 +57,18 @@ if(isset($_POST['id']) && isset($_POST['seatmapName'])){
     $smarty->assign('id', $id);
     $smarty->assign('seatmapName', $seatmapName);
     $oldImage = null;
+
+    /* Validation length of seat map name */
+    $len = strlen($seatmapName);
+    if($len < 6){
+        array_push($errorPOST,  'Seat map name must be between 6 and 25 chars!');
+        $success = false;
+    }
+    elseif($len > 25){
+        array_push($errorPOST,  'Seat map name must be between 6 and 25 chars!');
+        $success = false;
+    }
+
     /* Validation empty id and seatmap name */
     if(empty($_POST['id'])){
         array_push($errorPOST,  'ID is required!');
