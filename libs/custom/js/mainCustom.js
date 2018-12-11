@@ -30,7 +30,7 @@ function loadAllProfileToSeatmap(arraySeatmap, seatmapID) {
     for (i = 0; i < arraySeatmap.length; i++) {
         if ((arraySeatmap[i].seatmapID).toString() === seatmapID.toString()) {
             $('#backgroundImage').append(
-                '<li class="drapProfile dragged" data-id="' + arraySeatmap[i].id + '" data-path="' + arraySeatmap[i].path + '" data-name="' + arraySeatmap[i].name + '" style="position: absolute; left: ' + arraySeatmap[i].x + 'px; top: ' + arraySeatmap[i].y + 'px;">\n' +
+                '<li class="drapProfile dragged dropped" data-id="' + arraySeatmap[i].id + '" data-path="' + arraySeatmap[i].path + '" data-name="' + arraySeatmap[i].name + '" style="position: absolute; left: ' + arraySeatmap[i].x + 'px; top: ' + arraySeatmap[i].y + 'px;">\n' +
                 '  <form>\n' +
                 //'    <input type="hidden" name="id" value="' + arraySeatmap[i].id + '">\n' +
                 //'    <input type="hidden" name="path" value="' + arraySeatmap[i].path + '">\n' +
@@ -42,7 +42,8 @@ function loadAllProfileToSeatmap(arraySeatmap, seatmapID) {
             );
         }
     }
-    callDragAndDrop();
+    //callDragAndDrop();
+    draggableElementLoadedInDatabase();
 }
 
 /**
@@ -83,7 +84,7 @@ function loadingProfileFromDatabase(seatmapID) {
                 }
             }
             loadAllProfileToSeatmap(showArrayJSON, seatmapID);
-            callDragAndDrop();
+            //callDragAndDrop();
         });
 }
 
@@ -335,7 +336,7 @@ $(document).ready(function () {
                             content: 'Click confirm to save all data',
                             buttons: {
                                 confirm: function () {
-                                    location.reload();
+                                    //location.reload();
                                 }
                             }
                         });
@@ -440,11 +441,6 @@ $('#showSeatmap').click(function () {
         }
     });
 });
-
-/*
-$('.col').click(function () {
-    this.text('Le Nhat Thanh');
-});*/
 
 function hasId(data, id) {
     return data.some(function (el) {
@@ -594,5 +590,16 @@ function initDragForClass(className) {
 
         },
         containment: "document"
+    });
+}
+
+function draggableElementLoadedInDatabase() {
+    $(".dragged").draggable({
+        cursor: "crosshair",
+        revert: "invalid",
+        zIndex: 1000,
+        start: function (event, ui) {
+            $(ui.helper).addClass("ui-helper");
+        }
     });
 }
