@@ -1,3 +1,7 @@
+body > li > img {
+    border-radius: 50%;
+}
+
 #backgroundImage {
     height: 800px;
     width: 2000px;
@@ -49,6 +53,10 @@
     max-width: 100%;
     margin-left: 20px;
 }
+.users-list > div > li:hover .removeUser {
+    display: block;
+    opacity: 1;
+}
 
 .users-list > div >li > a:hover,
 .users-list > div > li > a:hover .users-list-name {
@@ -96,10 +104,9 @@
     border-radius: 50%;
     border: none;
     margin: 10px;
+    display:none;
 }
-.removeUser:hover {
-    opacity: 1;
-}
+
 
 #removeOutOfSeatmap {
     position: absolute;
@@ -118,8 +125,11 @@
     border-radius: 50%;
     border: none;
     margin: 10px;
+    display:none;
 }
-#removeOutOfSeatmap:hover {
+
+#backgroundImage > li:hover #removeOutOfSeatmap {
+    display: block;
     opacity: 1;
 }
 
@@ -187,7 +197,7 @@
     border-radius: 50%;
     max-width: 50px;
     margin-left: 20px;
-    max-height: 54px;
+    max-height: 50px;
 }
 
 .dropped > a:hover,

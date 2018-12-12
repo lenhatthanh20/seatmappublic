@@ -437,9 +437,7 @@ function callDragAndDrop() {
         scroll: true,
         start: function (event, ui) {
             $(ui.helper).addClass("ui-helper");
-            if ($(this).hasClass('dragged')) {
-               // $(this).detach();
-            }
+            $(ui.helper).css('border-radius', '50%');
         },
         helper: function () {
             return jQuery(this).clone().appendTo('body');
@@ -448,7 +446,7 @@ function callDragAndDrop() {
 
         },
         drag: function (event, ui) {
-
+            $(ui.helper).css('border-radius', '50%');
         },
         containment: "document"
     });

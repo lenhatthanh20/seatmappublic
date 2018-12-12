@@ -69,6 +69,16 @@
                 <!-- /.card-body -->
             </div>
             <!--/.card -->
+
+            <div class="card text-white bg-dark mb-3" style="max-height: 83%;overflow-y: auto;height: auto;margin-top: -15px;border-radius:0px;">
+                <!-- /.card-header -->
+                <div class="card-body p-3">
+                    <span id="please" class="badge badge-warning"> Please</span> scroll down and right to see full map!
+                    <!-- /.users-list -->
+                </div>
+                <!-- /.card-body -->
+            </div>
+            <!--/.card -->
         </div>
 
         <div id="seatmapCustom" class="col-10">
