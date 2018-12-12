@@ -7,6 +7,7 @@ $seatmap = new Seatmap();
 if( isset($_SESSION["username"])) {
 
 }else {
+    header('Location: /seatmap/controllers/index.php');
     die();
 }
 

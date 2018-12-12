@@ -15,7 +15,9 @@ function loadAllProfileToSeatmap(arraySeatmap, seatmapID) {
     for (i = 0; i < arraySeatmap.length; i++) {
         if ((arraySeatmap[i].seatmapID).toString() === seatmapID.toString()) {
             $('#backgroundImage').append(
-                '<li class="drapProfile dragged" data-id="' + arraySeatmap[i].id + '" data-path="' + arraySeatmap[i].path + '" data-name="' + arraySeatmap[i].name + '" style="position: absolute; left: ' + arraySeatmap[i].x + 'px; top: ' + arraySeatmap[i].y + 'px;">\n' +
+                '<li class="drapProfile dragged dropped" data-id="' + arraySeatmap[i].id + '" data-path="' + arraySeatmap[i].path + '" data-name="' + arraySeatmap[i].name + '" style="position: absolute; left: ' + arraySeatmap[i].x + 'px; top: ' + arraySeatmap[i].y + 'px;">\n' +
+                '  <form>\n' +
+                '  </form>\n' +
                 '  <img src="' + arraySeatmap[i].path + '" height="90px" width="90px" image>\n' +
                 '  <p class="users-list-name">' + arraySeatmap[i].name + '</p>\n' +
                 '</li>'

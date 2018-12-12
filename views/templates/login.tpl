@@ -1,5 +1,6 @@
 <html>
 <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=9" />
     <link rel="shortcut icon" href="/seatMap/images/default.png">
     <!-- Boostrap core including -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">

@@ -1,5 +1,6 @@
 <html>
 <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=9" />
 
     <link rel="shortcut icon" href="/seatMap/images/default.png">
 

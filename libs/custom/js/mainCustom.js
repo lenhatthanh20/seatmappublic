@@ -134,11 +134,14 @@ $(document).ready(function () {
                     '</span>'
                 )
             } else {
-                $('.avatar-upload').append(
-                    '<span id=\'removeImage2\' class="btn btn-block btn-outline-dark mt-2">\n' +
-                    '            Undo image\n' +
-                    '</span>'
-                )
+                if(!$('#removeImage2').length){
+                    $('.avatar-upload').append(
+                        '<span id=\'removeImage2\' class="btn btn-block btn-outline-dark mt-2">\n' +
+                        '            Undo image\n' +
+                        '</span>'
+                    )
+                }
+
             }
         }
     });
