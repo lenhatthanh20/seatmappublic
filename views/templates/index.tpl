@@ -17,7 +17,7 @@
 </head>
 <body style="height: 100%;">
 <!-- Navbar -->
-<nav class="navbar navbar-expand-sm navbar-dark bg-dark mb-4">
+<nav class="navbar navbar-expand-sm navbar-dark bg-dark fixed-top">
 
     <button id="showSeatmap" type="button" class="btn btn-default" style="margin-left:15px;">Show Seatmap</button>
 
@@ -49,10 +49,30 @@
     <script>alert($messsage)</script>
 {/if}
 
-<div class="login" style="min-height: 720px">
+<div class="login" style="min-height: 720px; margin-top:100px;">
     <div class="row" style="max-width: 100%;">
-        <div id="seatmapCustom" class="col-12" style="margin-left:15px;">
-            <div id="backgroundImage" data-seatmapID="{$arrayAllSeatmap[0][0]}" data-seatmapPath="{$arrayAllSeatmap[0][1]}" class="w-100 h-75" style="background-image: url('{$arrayAllSeatmap[0][1]}');">
+
+        <div id="sidebarCustom" class="col-2 fbox" style="left:0px; position: inherit; margin-top:15px;">
+            <div class="card text-white bg-dark mb-3" style="max-height: 83%;overflow-y: auto;height: auto;margin-top: -15px;border-radius:0px;">
+                <div class="card-header">
+                    <h5 class="card-title">Tutorial for guest and administration</h5>
+                </div>
+                <!-- /.card-header -->
+                <div class="card-body p-3">
+                    <h5><span class="badge badge-secondary mt-2">For guest:</span></h5>
+                        - Guest can see all profile that have a seat in the map.<br>
+                        - Guest can click <span class="badge badge-light">Show Seatmap</span> button to switch another map.
+                    <h5><span class="badge badge-secondary  mt-3">For admin:</span></h5>
+                    - Admin can click <span class="badge badge-info">Login for Admin</span> button for login action and then can get more permission.
+                    <!-- /.users-list -->
+                </div>
+                <!-- /.card-body -->
+            </div>
+            <!--/.card -->
+        </div>
+
+        <div id="seatmapCustom" class="col-10">
+            <div id="backgroundImage" data-seatmapID="{$arrayAllSeatmap[0][0]}" data-seatmapPath="{$arrayAllSeatmap[0][1]}" style="background-image: url('{$arrayAllSeatmap[0][1]}');">
             </div>
 
             <div id="listAllSeatmap" class="row">
@@ -73,6 +93,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.0/jquery-confirm.min.js"></script>
 
 <link rel="stylesheet" href="/seatmap/libs/custom/css/mainCustom.css">
+<link rel="stylesheet" href="/seatmap/libs/custom/css/responsive.css">
 <script src="/seatmap/libs/custom/js/loadDatabase.js"></script>
 </body>
 </html>

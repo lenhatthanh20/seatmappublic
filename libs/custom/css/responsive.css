@@ -1,0 +1,29 @@
+/* Desktops and laptops ----------- */
+@media only screen  and (min-width : 1224px) {
+    #sidebarCustom {
+        font-size: 13px;
+    }
+
+    .badge {
+        font-size: 75%;
+    }
+
+    .h5, h5 {
+        font-size: 1rem;
+    }
+}
+
+/* Large screens ----------- */
+@media only screen  and (min-width : 1824px) {
+    #sidebarCustom {
+        font-size: 18px;
+    }
+
+    .badge {
+        font-size: 75%;
+    }
+
+    .h5, h5 {
+        font-size: 1.25rem;
+    }
+}

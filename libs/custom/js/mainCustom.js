@@ -98,33 +98,7 @@ function loadingProfileFromArrayJson(arrayJson, seatmapID) {
 $(document).ready(function () {
     loadingProfileFromDatabase(currentSeatmapId);
     callDragAndDrop();
-    /* Show and Hide left sidebar */
-    $('#showSidebar').click(function () {
-        $('#seatmapCustom').css('margin-left', '0px');
-        var n = $("#sidebarCustom").css("left");
-        if (n === '0px') {
-            //$('#backgroundImage').css('margin-left', '6px');
-            // $('#backgroundImage').css('width', '100%');
-            $('#backgroundImage').css('margin-left', '15px');
-            $('#sidebarCustom').css('left', '-320px');
-            $('#sidebarCustom').css('position', 'absolute');
-            $("#seatmapCustom").toggleClass('col-10 col-12');
-
-            $("#seatmapCustom").css('transition', '0s');
-
-
-        } else {
-            $('#sidebarCustom').css('left', '0px');
-            $('#sidebarCustom').css('position', 'inherit');
-            $("#seatmapCustom").toggleClass('col-12 col-10');
-            $('#backgroundImage').css('margin-left', '0px');
-
-            //$('#backgroundImage').css('width', '100%');
-
-        }
-
-    });
-
+    getSizeOfBackgroundImage();
     /* Event click to remove user */
     $(document).on("click", ".removeUser", function () {
         var user_name = $(this).attr('data-user-name');
@@ -222,7 +196,7 @@ $(document).ready(function () {
         currentSeatmapImage = $(this).attr('data-seatmapImage');
         $('#backgroundImage').css('margin-left', '15px');
         $('#listAllSeatmap').empty();
-        $('#seatmapCustom').append('<div id="backgroundImage" data-seatmapID="' + currentSeatmapId + '" class="w-100 h-75" style="background-image: url(' + currentSeatmapImage + ');">');
+        $('#seatmapCustom').append('<div id="backgroundImage" data-seatmapID="' + currentSeatmapId + '" style="background-image: url(' + currentSeatmapImage + ');">');
 
         if(arrayJSON.length > 0){
             for (var i = 0; i < arrayJSON.length; ++i) {
@@ -234,6 +208,7 @@ $(document).ready(function () {
                 }
             }
         }
+        getSizeOfBackgroundImage();
         loadingProfileFromArrayJson(tempArrayJSON, currentSeatmapId);
         droppableElementLoadedInDatabase();
         //loadAllProfileToSeatmap(arrayJSON, currentSeatmapId);
@@ -418,7 +393,7 @@ $('#showSeatmap').click(function () {
         } else {
             $('#backgroundImage').css('margin-left', '15px');
             $('#listAllSeatmap').empty();
-            $('#seatmapCustom').append('<div id="backgroundImage" data-seatmapID="' + currentSeatmapId + '" class="w-100 h-75" style="background-image: url(' + currentSeatmapImage + ');">');
+            $('#seatmapCustom').append('<div id="backgroundImage" data-seatmapID="' + currentSeatmapId + '" style="background-image: url(' + currentSeatmapImage + ');">');
             if(arrayJSON.length > 0){
                 for (var i = 0; i < arrayJSON.length; ++i) {
                     if(hasId(tempArrayJSON, arrayJSON[i].id)){
@@ -430,7 +405,7 @@ $('#showSeatmap').click(function () {
             }
             loadingProfileFromArrayJson(tempArrayJSON, currentSeatmapId);
             droppableElementLoadedInDatabase();
-            //callDragAndDrop();
+            getSizeOfBackgroundImage();
         }
     });
 });
@@ -459,6 +434,7 @@ function callDragAndDrop() {
         cursor: "crosshair",
         revert: "invalid",
         zIndex: 1000,
+        scroll: true,
         start: function (event, ui) {
             $(ui.helper).addClass("ui-helper");
             if ($(this).hasClass('dragged')) {
@@ -494,7 +470,8 @@ function callDragAndDrop() {
                 var parentOffset = jQuery('#backgroundImage').offset();
                 var dropped = jQuery(ui.draggable).clone().css('position', 'absolute').addClass("dropped").draggable(
                     {
-                        revert: "invalid"
+                        revert: "invalid",
+                        scroll: true
                     }
 
                 );
@@ -526,39 +503,7 @@ function callDragAndDrop() {
             } else { // if id is not exist in arrayJSON --> add new record in arrayJSON
                 arrayJSON.push({'id': id, 'x': x, 'y': y, 'seatmapID': currentSeatmapId, 'path': path, 'name': name});
             }
-        },
-
-        /*out: function(event, ui) {
-            $(ui.helper).mouseup(function() {
-                var id = $(ui.draggable).attr('data-id'); // ID to save to JSON object
-                var path = $(ui.draggable).attr('data-path'); // Path to save to JSON object
-                var name = $(ui.draggable).attr('data-name');// Name to save to JSON object
-                var x = $(ui.draggable).css('left'); // x to save to JSON object
-                x = x.replace("px", "");
-                var y = $(ui.draggable).css('top'); // y to save to JSON object
-                y = y.replace("px", "");
-                ui.draggable.remove();
-                $('.users-list').append(
-                    '<div class="drapProfile fixBugCanNotDrap">\n' +
-                    '    <li class="drapProfile fixBugCanNotDrap" data-id="'+id+'" data-path="'+path+'" data-name="'+name+'">\n' +
-                    '        <form method="post" action="deleteUser.php">\n' +
-                    '             <input type="hidden" name="id" value="'+id+'">\n' +
-                    '             <input type="hidden" name="path" value="'+path+'">\n' +
-                    '             <button type="submit" data-user-name="'+name+'" class="removeUser">&times;</button>\n' +
-                    '        </form>\n' +
-                    '        <img src="'+path+'" height="90px" width="90px" Image">\n' +
-                    '        <a href="updateUser.php?id='+id+'"><p class="users-list-name">'+name+'</p></a>\n' +
-                    '     </li>\n' +
-                    '</div>'
-                );
-
-                initDragForClass('fixBugCanNotDrap');
-                $('.fixBugCanNotDrap').removeClass('fixBugCanNotDrap');
-            });
-        },
-        over: function(event, ui) {
-            ui.draggable.remove();
-        }*/
+        }
     });
 }
 
@@ -567,6 +512,7 @@ function initDragForClass(className) {
         cursor: "crosshair",
         revert: "invalid",
         zIndex: 1000,
+        scroll: true,
         start: function (event, ui) {
             $(ui.helper).addClass("ui-helper");
             if ($(this).hasClass('dragged')) {
@@ -591,6 +537,7 @@ function draggableElementLoadedInDatabase() {
         cursor: "crosshair",
         revert: "invalid",
         zIndex: 1000,
+        scroll: true,
         start: function (event, ui) {
             $(ui.helper).addClass("ui-helper");
         }
@@ -615,7 +562,8 @@ function droppableElementLoadedInDatabase() {
                 var parentOffset = jQuery('#backgroundImage').offset();
                 var dropped = jQuery(ui.draggable).clone().css('position', 'absolute').addClass("dropped").draggable(
                     {
-                        revert: "invalid"
+                        revert: "invalid",
+                        scroll: true
                     }
 
                 );
@@ -647,38 +595,29 @@ function droppableElementLoadedInDatabase() {
             } else { // if id is not exist in arrayJSON --> add new record in arrayJSON
                 arrayJSON.push({'id': id, 'x': x, 'y': y, 'seatmapID': currentSeatmapId, 'path': path, 'name': name});
             }
-        },
+        }
 
-        /*out: function(event, ui) {
-            $(ui.helper).mouseup(function() {
-                var id = $(ui.draggable).attr('data-id'); // ID to save to JSON object
-                var path = $(ui.draggable).attr('data-path'); // Path to save to JSON object
-                var name = $(ui.draggable).attr('data-name');// Name to save to JSON object
-                var x = $(ui.draggable).css('left'); // x to save to JSON object
-                x = x.replace("px", "");
-                var y = $(ui.draggable).css('top'); // y to save to JSON object
-                y = y.replace("px", "");
-                ui.draggable.remove();
-                $('.users-list').append(
-                    '<div class="drapProfile fixBugCanNotDrap">\n' +
-                    '    <li class="drapProfile fixBugCanNotDrap" data-id="'+id+'" data-path="'+path+'" data-name="'+name+'">\n' +
-                    '        <form method="post" action="deleteUser.php">\n' +
-                    '             <input type="hidden" name="id" value="'+id+'">\n' +
-                    '             <input type="hidden" name="path" value="'+path+'">\n' +
-                    '             <button type="submit" data-user-name="'+name+'" class="removeUser">&times;</button>\n' +
-                    '        </form>\n' +
-                    '        <img src="'+path+'" height="90px" width="90px" Image">\n' +
-                    '        <a href="updateUser.php?id='+id+'"><p class="users-list-name">'+name+'</p></a>\n' +
-                    '     </li>\n' +
-                    '</div>'
-                );
-
-                initDragForClass('fixBugCanNotDrap');
-                $('.fixBugCanNotDrap').removeClass('fixBugCanNotDrap');
-            });
-        },
-        over: function(event, ui) {
-            ui.draggable.remove();
-        }*/
     });
+}
+
+function getSizeOfBackgroundImage(){
+    var imageSrc = document
+        .getElementById('backgroundImage')
+        .style
+        .backgroundImage
+        .replace(/url\((['"])?(.*?)\1\)/gi, '$2')
+        .split(',')[0];
+
+    // I just broke it up on newlines for readability
+
+    var image = new Image();
+    image.src = imageSrc;
+
+    var width = image.width,
+        height = image.height;
+
+    //alert('width =' + width + ', height = ' + height)
+
+    $('#backgroundImage').css('width', width +'px');
+    $('#backgroundImage').css('height', height +'px');
 }

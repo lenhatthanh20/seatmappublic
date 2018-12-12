@@ -109,10 +109,10 @@ $('#showSeatmap').click(function () {
         } else {
             $('#backgroundImage').css('margin-left', '15px');
             $('#listAllSeatmap').empty();
-            $('#seatmapCustom').append('<div id="backgroundImage" data-seatmapID="' + currentSeatmapId + '" class="w-100 h-75" style="background-image: url(' + currentSeatmapImage + ');">');
+            $('#seatmapCustom').append('<div id="backgroundImage" data-seatmapID="' + currentSeatmapId + '" style="background-image: url(' + currentSeatmapImage + ');">');
 
             loadingProfileFromArrayJson(tempArrayJSON, currentSeatmapId);
-
+            getSizeOfBackgroundImage();
         }
     });
 });
@@ -122,11 +122,34 @@ $(document).on("click", ".chooseSeatmap", function () {
     currentSeatmapImage = $(this).attr('data-seatmapImage');
     $('#backgroundImage').css('margin-left', '15px');
     $('#listAllSeatmap').empty();
-    $('#seatmapCustom').append('<div id="backgroundImage" data-seatmapID="' + currentSeatmapId + '" class="w-100 h-75" style="background-image: url(' + currentSeatmapImage + ');">');
+    $('#seatmapCustom').append('<div id="backgroundImage" data-seatmapID="' + currentSeatmapId + '" style="background-image: url(' + currentSeatmapImage + ');">');
 
     loadingProfileFromArrayJson(tempArrayJSON, currentSeatmapId);
+    getSizeOfBackgroundImage();
 });
 
 $(document).ready(function () {
+    getSizeOfBackgroundImage();
     loadingProfileFromDatabase(currentSeatmapId);
+
 });
+
+function getSizeOfBackgroundImage(){
+    var imageSrc = document
+        .getElementById('backgroundImage')
+        .style
+        .backgroundImage
+        .replace(/url\((['"])?(.*?)\1\)/gi, '$2')
+        .split(',')[0];
+
+    // I just broke it up on newlines for readability
+
+    var image = new Image();
+    image.src = imageSrc;
+
+    var width = image.width,
+        height = image.height;
+
+    $('#backgroundImage').css('width', width +'px');
+    $('#backgroundImage').css('height', height +'px');
+}

@@ -1,10 +1,7 @@
 #backgroundImage {
+    height: 800px;
+    width: 2000px;
     background-repeat: no-repeat;
-    height: 75%;
-    width: 100%;
-
-    border-radius: 3px;
-    /*background-size:contain;*/
 }
 
 #closebtn {
@@ -181,11 +178,13 @@
     float: left;
     /* padding: 10px; */
     text-align: center;
+    width: 107px;
+    height: 100px;
 }
 
 .dropped img {
     border-radius: 50%;
-    max-width: 50%;
+    max-width: 50px;
     margin-left: 20px;
     max-height: 54px;
 }
@@ -199,13 +198,15 @@
     float: left;
     /* padding: 10px; */
     text-align: center;
+    width: 107px;
+    height: 100px;
 }
 
 .dragged img {
     border-radius: 50%;
-    max-width: 50%;
+    max-width: 50px;
     margin-left: 20px;
-    max-height: 54px;
+    max-height: 50px;
 }
 
 .dragged > a:hover,

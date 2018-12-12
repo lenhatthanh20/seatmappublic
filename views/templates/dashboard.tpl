@@ -17,9 +17,8 @@
 </head>
 <body style="height: 100%;">
 <!-- Navbar -->
-<nav class="navbar navbar-expand-sm navbar-dark bg-dark mb-4">
+<nav class="navbar navbar-expand-sm navbar-dark bg-dark fixed-top">
 
-    <button id="showSidebar" type="button" class="btn btn-default">Show User List</button>
     <button id="showSeatmap" type="button" class="btn btn-default" style="margin-left:15px;">Show Seatmap</button>
 
     <div class="container">
@@ -75,12 +74,12 @@
     <script>alert($messsage)</script>
 {/if}
 
-<div class="login" style="min-height: 720px;">
+<div class="login" style="min-height: 720px; margin-top:100px;">
         <div class="row" style="max-width: 100%;">
-            <div id="sidebarCustom" class="col-2 fbox" style="left:0px; position: inherit;">
+            <div id="sidebarCustom" class="col-2 fbox" style="left:0px; position: inherit; margin-top:15px;"">
                 <div class="card text-white bg-dark mb-3" style="max-height: 83%;overflow-y: auto;height: auto;margin-top: -15px;border-radius:0px;">
                     <div class="card-header">
-                        <h3 class="card-title">All Members</h3>
+                        <h5 class="card-title">Members have no seats</h5>
                     </div>
                     <!-- /.card-header -->
                     <div class="card-body p-0">
@@ -111,8 +110,9 @@
             </div>
 
             <div id="seatmapCustom" class="col-10">
-                <div id="backgroundImage"  data-seatmapID="{$arrayAllSeatmap[0][0]}" data-seatmapPath="{$arrayAllSeatmap[0][1]}" style="background-image: url('{$arrayAllSeatmap[0][1]}');">
-                </div>
+
+                    <div id="backgroundImage"  data-seatmapID="{$arrayAllSeatmap[0][0]}" data-seatmapPath="{$arrayAllSeatmap[0][1]}" style="background-image: url('{$arrayAllSeatmap[0][1]}');">
+                    </div>
 
                 <div id="listAllSeatmap" class="row">
                     <!-- Seatmap image will be here -->
@@ -132,6 +132,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.0/jquery-confirm.min.js"></script>
 
 <link rel="stylesheet" href="../libs/custom/css/mainCustom.css">
+<link rel="stylesheet" href="/seatmap/libs/custom/css/responsive.css">
 <script src="../libs/custom/js/mainCustom.js"></script>
 </body>
 </html>
