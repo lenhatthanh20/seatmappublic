@@ -601,6 +601,10 @@ function droppableElementLoadedInDatabase() {
 }
 
 function getSizeOfBackgroundImage(){
+
+    if(!$('#backgroundImage').length){
+        return false;
+    }
     var imageSrc = document
         .getElementById('backgroundImage')
         .style
@@ -620,4 +624,11 @@ function getSizeOfBackgroundImage(){
 
     $('#backgroundImage').css('width', width +'px');
     $('#backgroundImage').css('height', height +'px');
+
+    if(height < 720) {
+        $('.login').css('min-height', '1000px');
+    } else {
+        $('.login').css('min-height', (height + 100) + 'px');
+    }
+
 }

@@ -60,8 +60,8 @@
                 <!-- /.card-header -->
                 <div class="card-body p-3">
                     <h5><span class="badge badge-secondary mt-2">For guest:</span></h5>
-                        - Guest can see all profile that have a seat in the map.<br>
-                        - Guest can click <span class="badge badge-light">Show Seatmap</span> button to switch another map.
+                        - Guest can see all profiles that have seat in the map.<br>
+                        - Guest can click <span class="badge badge-light">Show Seatmap</span> button to switch to another map.
                     <h5><span class="badge badge-secondary  mt-3">For admin:</span></h5>
                     - Admin can click <span class="badge badge-info">Login for Admin</span> button for login action and then can get more permission.
                     <!-- /.users-list -->

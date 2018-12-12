@@ -11,6 +11,20 @@
     .h5, h5 {
         font-size: 1rem;
     }
+
+    .users-list > div > li {
+        margin-left: 16px;
+    }
+
+    .card {
+        display: block;
+        border:none;
+    }
+
+    #seatmapCustom > div > div > div {
+        display: table-cell;
+    }
+
 }
 
 /* Large screens ----------- */
@@ -25,5 +39,9 @@
 
     .h5, h5 {
         font-size: 1.25rem;
+    }
+
+    .users-list > div > li {
+        margin-left: 0px;
     }
 }

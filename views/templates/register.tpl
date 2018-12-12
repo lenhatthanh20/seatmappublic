@@ -62,7 +62,7 @@
     </span>
 
 <!-- Body -->
-<div class="login" style="min-height: 720px;">
+<div class="login" style="min-height: 1000px;">
     <div class="container">
         <div class="row">
             <div class="col-md-5 m-auto">

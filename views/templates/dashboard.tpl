@@ -74,7 +74,7 @@
     <script>alert($messsage)</script>
 {/if}
 
-<div class="login" style="min-height: 720px; margin-top:100px;">
+<div class="login" style="min-height: 1000px; margin-top:100px;">
         <div class="row" style="max-width: 100%;">
             <div id="sidebarCustom" class="col-2 fbox" style="left:0px; position: inherit; margin-top:15px;"">
                 <div class="card text-white bg-dark mb-3" style="max-height: 83%;overflow-y: auto;height: auto;margin-top: -15px;border-radius:0px;">
