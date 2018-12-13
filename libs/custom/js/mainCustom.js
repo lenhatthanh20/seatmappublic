@@ -410,6 +410,17 @@ $(document).ready(function () {
         });
     });
 
+    /**
+     * @handleEvent: keyup - user type in search box
+     * @selection: Filter and show all seat map that matching with input value by string.
+     */
+    $(document).on("keyup", "#searchAndFilterSeatMap", function () {
+        var value = $(this).val().toLowerCase();
+        $("#listAllSeatmap .hoverEffect").filter(function() {
+            $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+        });
+    });
+
 });
 
 /**
@@ -460,6 +471,15 @@ $('#showSeatmap').click(function () {
 
             var imageArray = [];
             var imageInfo = [];
+
+            $('#seatmapCustom').prepend(
+                '<div class="input-group mb-3">\n' +
+                '  <input id="searchAndFilterSeatMap" type="text" class="form-control" placeholder="Type the name of seat map" aria-label="Recipient\'s username" aria-describedby="basic-addon2">\n' +
+                '  <div class="input-group-append">\n' +
+                '    <button class="btn btn-outline-secondary" type="button">Search</button>\n' +
+                '  </div>\n' +
+                '</div>'
+            );
 
             for (i = 0; i < data.length; i++) {
 
