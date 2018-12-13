@@ -461,11 +461,11 @@ $('#showSeatmap').click(function () {
                     '                    <div id="' + data[i][0] + '" class="hoverEffect col-4"  alt="Card image cap">\n' +
                     '                        <span class="badge badge-dark btn-lg mb-1" style="font-size:100%">' + data[i][2] + '</span>' +
                     '                        <div class="card" style="width: 27rem;" data-toggle="tooltip" data-placement="bottom" title="' + imageInfo[i] + '">\n' +
-                    '                            <img class="card-img-top" src="' + data[i][1] + '">\n' +
+                    '                            <img data-seatmapImage="' + data[i][1] + '" data-seatmapId="' + data[i][0] + '" class="chooseSeatmap card-img-top" src="' + data[i][1] + '">\n' +
                     '                        </div>\n' +
                     '                            <form action="updateSeatmap.php" method="get">' +
                     '                                <input type="hidden" class="form-control form-control-lg" name="id" value="' + data[i][0] + '">\n' +
-                    '                                <button type="button" data-seatmapImage="' + data[i][1] + '" data-seatmapId="' + data[i][0] + '" class="chooseSeatmap btn btn-outline-success btn-sm mt-1">Choose</button>\n' +
+                    //'                                <button type="button" data-seatmapImage="' + data[i][1] + '" data-seatmapId="' + data[i][0] + '" class="chooseSeatmap btn btn-outline-success btn-sm mt-1">Choose</button>\n' +
                     '                                <button type="submit" class="btn btn-outline-dark btn-sm mt-1">Edit</button>\n' +
                     '                                <button type="button" class="btn btn-outline-danger btn-sm mt-1" onclick="return removeSeatmap(\'' + data[i][0] + '\',\'' + data[i][1] + '\')">Remove</button>\n' +
                     '                            </form>' +
