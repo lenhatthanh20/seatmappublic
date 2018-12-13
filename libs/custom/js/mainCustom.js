@@ -364,36 +364,38 @@ $(document).ready(function () {
      *             - Position (left and top) and seat map ID will be saved to database.
      */
     $(document).on("click", "#saveToSeatmap", function () {
-        console.log(tempArrayJSON);
-        if (arrayJSON.length) {
-            $.post('saveProfileToSeatmap.php',
-                {
-                    jsonObject: JSON.stringify(arrayJSON)
-                },
-                function (response) {
-                    if (response == 1) {
-                        $.confirm({
-                            title: 'MESSAGE!',
-                            content: 'Click confirm to save all data',
-                            buttons: {
-                                confirm: function () {
-                                    //location.reload();
+        $.confirm({
+            title: 'MESSAGE!',
+            content: 'Click confirm to save all data',
+            buttons: {
+                confirm: function () {
+                    if (arrayJSON.length) {
+                        $.post('saveProfileToSeatmap.php',
+                            {
+                                jsonObject: JSON.stringify(arrayJSON)
+                            },
+                            function (response) {
+                                if (response == 1) {
+                                    /* Save database successfully */
+                                } else {
+                                    $.alert({
+                                        title: 'ERROR!',
+                                        content: 'Can not save database!',
+                                    });
                                 }
-                            }
-                        });
+                            });
                     } else {
                         $.alert({
-                            title: 'ERROR!',
-                            content: 'Can not save database!',
+                            title: 'ERROR',
+                            content: 'Nothing to save in database!',
                         });
                     }
-                });
-        } else {
-            $.alert({
-                title: 'ERROR',
-                content: 'Nothing to save in database!',
-            });
-        }
+                },
+                cancel: function () {
+                    /* Cancel */
+                }
+            }
+        });
 
     });
 

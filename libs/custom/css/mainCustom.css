@@ -1,6 +1,6 @@
 #breadcrumb-fixed {
     position: fixed;
-    z-index: 2;
+    z-index: 1000;
     width: 100%;
 }
 #breadcrumb-fixed-ol{
