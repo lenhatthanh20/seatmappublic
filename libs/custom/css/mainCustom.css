@@ -1,3 +1,30 @@
+#breadcrumb-fixed {
+    position: fixed;
+    z-index: 2;
+    width: 100%;
+}
+#breadcrumb-fixed-ol{
+    margin-top: -52px;
+}
+
+.arr-right .breadcrumb-item+.breadcrumb-item::before {
+    content: "›";
+    vertical-align:top;
+    color: #212727;
+    font-size:35px;
+    line-height:18px;
+}
+
+.bg-dark {
+    border-radius: 0px;
+}
+
+.breadcrumb {
+    margin-top: -22px;
+    background-color: #5a86bd!important;
+    padding: 5px 10px 5px 10px;
+}
+
 body > li > img {
     border-radius: 50%;
 }

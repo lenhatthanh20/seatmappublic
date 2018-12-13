@@ -6,7 +6,7 @@
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
-
+    <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
 
     <title>Seat-map management</title>
 
@@ -123,9 +123,13 @@
 </nav>
 
 <!-- Site position -->
-<span class="badge badge-light">
-        <a class="link" href="dashboard.php">Dashboard</a> / Update profile
-    </span>
+<nav aria-label="breadcrumb ">
+    <ol class="breadcrumb arr-right bg-dark ">
+        <li class="breadcrumb-item "><a href="/seatmap/controllers/index.php" class="text-light"><i class="fa fa-home"></i> Homepage</a></li>
+        <li class="breadcrumb-item "><a href="/seatmap/controllers/dashboard.php" class="text-light">Dashboard</a></li>
+        <li class="breadcrumb-item text-light active" aria-current="page">Update Profile</li>
+    </ol>
+</nav>
 
 <div class="login" style="min-height: 1000px;">
     <div class="container">

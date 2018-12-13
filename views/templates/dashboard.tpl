@@ -9,8 +9,7 @@
     <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
-
-
+    <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
 
     <title>Seat-map management</title>
 
@@ -70,12 +69,20 @@
     </div>
 </nav>
 
+<!-- Site position -->
+<nav id="breadcrumb-fixed" aria-label="breadcrumb" style="margin-top:-6px;">
+    <ol id="breadcrumb-fixed-ol" class="breadcrumb arr-right bg-dark ">
+        <li class="breadcrumb-item "><a href="/seatmap/controllers/index.php" class="text-light"><i class="fa fa-home"></i> Homepage</a></li>
+        <li class="breadcrumb-item text-light active" aria-current="page">Dashboard</li>
+    </ol>
+</nav>
+
 {if isset($success) && isset($messsage)}
     <script>alert($messsage)</script>
 {/if}
 
-<div class="login" style="min-height: 1000px; margin-top:100px;">
-        <div class="row" style="max-width: 100%;">
+<div class="login" style="min-height: 1000px; margin-top:130px;">
+        <div class="row" style="max-width: 100%">
             <div id="sidebarCustom" class="col-2 fbox" style="left:0px; position: inherit; margin-top:15px;"">
                 <div class="card text-white bg-dark mb-3" style="max-height: 83%;overflow-y: auto;height: auto;margin-top: -15px;border-radius:0px;">
                     <div class="card-header">

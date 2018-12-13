@@ -121,9 +121,13 @@
 </nav>
 
 <!-- Site position -->
-<span class="badge badge-light">
-    <a class="link" href="dashboard.php">Dashboard</a> / create profile
-</span>
+<nav aria-label="breadcrumb ">
+    <ol class="breadcrumb arr-right bg-dark ">
+        <li class="breadcrumb-item "><a href="/seatmap/controllers/index.php" class="text-light"><i class="fa fa-home"></i> Homepage</a></li>
+        <li class="breadcrumb-item "><a href="/seatmap/controllers/dashboard.php" class="text-light">Dashboard</a></li>
+        <li class="breadcrumb-item text-light active" aria-current="page">Create Profile</li>
+    </ol>
+</nav>
 
 <div class="login" style="min-height: 1000px;">
     <div class="container">
