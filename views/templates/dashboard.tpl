@@ -86,7 +86,16 @@
             <div id="sidebarCustom" class="col-2 fbox" style="left:0px; position: inherit; margin-top:15px;"">
                 <div class="card text-white bg-dark mb-3" style="max-height: 83%;overflow-y: auto;height: auto;margin-top: -15px;border-radius:0px;">
                     <div class="card-header">
-                        <h5 class="card-title">Members have no seats</h5>
+                        <!-- <h5 class="card-title">Members have no seats</h5> -->
+                        <!-- Search form -->
+                        <div class="input-group">
+                            <input id="searchAndFilter" type="text" class="form-control" placeholder="Search profile">
+                            <div class="input-group-append">
+                                <button class="btn btn-secondary" type="button">
+                                    <i class="fa fa-search"></i>
+                                </button>
+                            </div>
+                        </div>
                     </div>
                     <!-- /.card-header -->
                     <div class="card-body p-0">

@@ -399,6 +399,16 @@ $(document).ready(function () {
 
     });
 
+    /**
+     * @handleEvent: keyup - user type in search box
+     * @selection: Filter and show all profile that matching with input value by string.
+     */
+    $("#searchAndFilter").on("keyup", function() {
+        var value = $(this).val().toLowerCase();
+        $(".users-list div").filter(function() {
+            $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+        });
+    });
 
 });
 
