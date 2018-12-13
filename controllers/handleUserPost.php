@@ -80,11 +80,11 @@ if(isset($_POST["username"]) && isset($_POST["email"])) {
     /* Validation the length of name field */
     $len = strlen($username);
     if($len < 6){
-        array_push($error,  'Your name must be between 6 and 25 chars!');
+        array_push($error,  'Your name must be between 6 and 30 chars!');
         $success = false;
     }
-    elseif($len > 25){
-        array_push($error,  'Your name must be between 6 and 25 chars!');
+    elseif($len > 30){
+        array_push($error,  'Your name must be between 6 and 30 chars!');
         $success = false;
     }
 

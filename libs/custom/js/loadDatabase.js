@@ -19,7 +19,7 @@ function loadAllProfileToSeatmap(arraySeatmap, seatmapID) {
                 '  <form>\n' +
                 '  </form>\n' +
                 '  <img src="' + arraySeatmap[i].path + '" height="90px" width="90px" image>\n' +
-                '  <p class="users-list-name">' + arraySeatmap[i].name + '</p>\n' +
+                '  <p style="position:absolute" class="users-list-name">' + arraySeatmap[i].name + '</p>\n' +
                 '</li>'
             );
         }

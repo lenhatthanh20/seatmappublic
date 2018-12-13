@@ -26,7 +26,7 @@ function loadAllProfileToSeatmap(arraySeatmap, seatmapID) {
                 '    <button id="removeOutOfSeatmap" type="button" data-user-id="' + arraySeatmap[i].id + '">×</button>\n' +
                 '  </form>\n' +
                 '  <img src="' + arraySeatmap[i].path + '" height="90px" width="90px" image>\n' +
-                '  <a href="updateUser.php?id=' + arraySeatmap[i].id + '"><p class="users-list-name">' + arraySeatmap[i].name + '</p></a>\n' +
+                '  <a href="updateUser.php?id=' + arraySeatmap[i].id + '"><p style="position:absolute" class="users-list-name">' + arraySeatmap[i].name + '</p></a>\n' +
                 '</li>'
             );
         }
@@ -582,6 +582,8 @@ function callDragAndDrop() {
                     '    <button id="removeOutOfSeatmap" type="button" data-user-id="' + id + '">×</button>\n' +
                     '  </form>'
                 );
+
+                $(dropped).children('a').children('p').css('position', 'absolute');
 
                 $(ui.draggable).detach();
             } else {
