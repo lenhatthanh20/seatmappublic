@@ -7,12 +7,14 @@ require_once('../models/Seatmap.php');
 
 $seatmap = new Seatmap();
 
+/* Check session */
 if( isset($_SESSION["username"])) {
     $smarty->assign('username', $_SESSION["username"]);
 }else {
     header('Location: /seatmap/controllers/index.php');
     die();
 }
+
 /* default variable */
 $seatmapName = null;
 $seatmapType = null;
@@ -70,6 +72,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 
     $smarty->assign('seatmapName', $_POST['seatmapName']);
 }
+
 /* Handle POST request */
 if(isset($_POST['seatmapName']) && $uploadOk === 1) {
 
@@ -115,6 +118,7 @@ if(isset($_POST['seatmapName']) && $uploadOk === 1) {
         }
     }
 }
+
 /* If have any error */
 if(sizeof($error)){
     $smarty->assign('error', $error);

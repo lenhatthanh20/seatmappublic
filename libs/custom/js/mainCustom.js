@@ -1,4 +1,4 @@
-/* Current seatmap variable */
+/* Current seat map variable */
 var currentSeatmapId = $('#backgroundImage').attr('data-seatmapID');
 var currentSeatmapImage = $('#backgroundImage').attr('data-seatmapPath');
 
@@ -10,9 +10,9 @@ var arrayJSON = [];
 var tempArrayJSON = [];
 
 /**
- * @method: Load all profiles to all seatmaps
+ * @method: Append all profile to current seat map
  * @param: arraySeatmap: store all profile from database
- *         seatmapID: seatmap to show data
+ *         seatmapID: current seat map to show data
  * @return: None
  */
 function loadAllProfileToSeatmap(arraySeatmap, seatmapID) {
@@ -36,9 +36,10 @@ function loadAllProfileToSeatmap(arraySeatmap, seatmapID) {
 }
 
 /**
- * @method: Load all profiles to all seatmaps when page is load or reload
- * @param: None.
- * @return: Array.
+ * @method: Load all profiles to all a array JSON
+ *          Then call loadAllProfileToSeatmap() to append all data in the array
+ * @param:  seatmapID: current seat map to show data
+ * @return: None
  */
 function loadingProfileFromDatabase(seatmapID) {
     var showArrayJSON = [];
@@ -78,9 +79,12 @@ function loadingProfileFromDatabase(seatmapID) {
 }
 
 /**
- * @method: Load all profiles to all seatmaps when page is load or reload
- * @param: None.
- * @return: Array.
+ * @method: Copy all data from arrayJson which mapping with current seat map ID.
+ *          After that, call loadAllProfileToSeatmap() for handle data to map
+ *          Then call loadAllProfileToSeatmap() to append all data in the array
+ * @param:  arrayJson: Global array that hold all profiles from database
+ *          seatmapID: current seat map to show data
+ * @return: None
  */
 function loadingProfileFromArrayJson(arrayJson, seatmapID) {
     var temp = [];
@@ -95,11 +99,25 @@ function loadingProfileFromArrayJson(arrayJson, seatmapID) {
     //callDragAndDrop();
 }
 
+/**
+ * @handleEvent: Jquery document is ready
+ */
 $(document).ready(function () {
+
+    /* Get background image size (map size), set height and width for screen */
     loadingProfileFromDatabase(currentSeatmapId);
+
+    /* Init both draggable and droppable element */
     callDragAndDrop();
+
+    /* Loading all profiles to current seat map */
     getSizeOfBackgroundImage();
-    /* Event click to remove user */
+
+    /**
+     * @handleEvent: Click
+     * @selection: Remove profile
+     *             - Handle delete profile post method to remove profile out of database
+     */
     $(document).on("click", ".removeUser", function () {
         var user_name = $(this).attr('data-user-name');
         console.log($(this).hasClass('ui-draggable'));
@@ -111,6 +129,11 @@ $(document).ready(function () {
         }
     });
 
+    /**
+     * @method: Read file image from input
+     * @param:  input
+     * @return: None
+     */
     function readURL(input) {
         if (input.files && input.files[0]) {
             var reader = new FileReader();
@@ -123,6 +146,12 @@ $(document).ready(function () {
         }
     }
 
+    /**
+     * @handleEvent: Image preview is changed
+     * @selection: File to upload
+     *             - When user change the image in input from,
+     *             Remove image or Undo image button will be displays
+     */
     $('#fileToUpload').change(function () {
         readURL(this);
         var dataUpdate = $('#imagePreview').attr('data-update');
@@ -146,6 +175,11 @@ $(document).ready(function () {
         }
     });
 
+    /**
+     * @handleEvent: Click
+     * @selection: Remove image button
+     *             - Handle event remove image to return the default image
+     */
     $(document).on("click", "#removeImage", function () {
         inputField = $('#fileToUpload');
         //console.log(inputField[0]);
@@ -163,6 +197,11 @@ $(document).ready(function () {
         $('#fileToUpload').val("");
     });
 
+    /**
+     * @handleEvent: Click
+     * @selection: Undo image button
+     *             - Handle event undo image to return the image which registered
+     */
     $(document).on("click", "#removeImage2", function () {
         inputField = $('#fileToUpload');
         //console.log(inputField[0]);
@@ -180,7 +219,14 @@ $(document).ready(function () {
         $('#fileToUpload').val("");
     });
 
-    $(document).on("dblclick", "#backgroundImage", function (e) {
+    /**
+     * [THIS FUNCTION IS NOT USED IN THIS VERSION]
+     * @handleEvent: Double click
+     * @selection: Background image
+     *             - When user double in background image. All user will be displayed
+     *             - Handle more event.
+     */
+    /*$(document).on("dblclick", "#backgroundImage", function (e) {
         $.post('listAllProfile.php', function (response) {
             $.alert({
                 title: 'Choose a profile!',
@@ -191,9 +237,15 @@ $(document).ready(function () {
                 theme: 'supervan'
             });
         });
+    });*/
 
-    });
-
+    /**
+     * @handleEvent: Click
+     * @selection: Choose seat map button
+     *             - When all seat map is displayed in screen, user can move the mouse in a specific seat map.
+     *             Choose seat map button will be hovered.
+     *             - User can click and choose what seat map is current.
+     */
     $(document).on("click", ".chooseSeatmap", function () {
         currentSeatmapId = $(this).attr('data-seatmapId');
         currentSeatmapImage = $(this).attr('data-seatmapImage');
@@ -218,6 +270,13 @@ $(document).ready(function () {
         //callDragAndDrop();
     });
 
+    /**
+     * @handleEvent: Click
+     * @selection: Remove profile out of seat map
+     *             - Remove profile out of seat map when user click 'x' button.
+     *             - The profile is removed will be appeared in the left sidebar.
+     *             - The profile will be not delete in database
+     */
     $(document).on("click", "#removeOutOfSeatmap", function () {
         var deleteID = $(this).attr('data-user-id');
         var thisRemove = $(this);
@@ -276,6 +335,13 @@ $(document).ready(function () {
         //alert($(this).attr('data-user-id'));
     });
 
+    /**
+     * @handleEvent: Click
+     * @selection: Cancel all manipulation before, except remove out of seat map event.
+     *             - Remove profile out of seat map when user click 'x' button.
+     *             - The profile is removed will be appeared in the left sidebar.
+     *             - The profile will be not delete in database
+     */
     $(document).on("click", "#cancelSaveSeatmap", function () {
         $.confirm({
             title: 'MESSAGE',
@@ -292,6 +358,11 @@ $(document).ready(function () {
 
     });
 
+    /**
+     * @handleEvent: Click
+     * @selection: Save all position of profiles to database
+     *             - Position (left and top) and seat map ID will be saved to database.
+     */
     $(document).on("click", "#saveToSeatmap", function () {
         console.log(tempArrayJSON);
         if (arrayJSON.length) {
@@ -328,7 +399,11 @@ $(document).ready(function () {
 
 });
 
-/* Remove seatmap */
+/**
+ * @method: Remove seat map out of database. All profiles in the map will be return to left sidebar.
+ * @param:  id, path
+ * @return: None
+ */
 function removeSeatmap(id, path) {
     $.confirm({
         title: 'WARNING!',
@@ -350,7 +425,13 @@ function removeSeatmap(id, path) {
     });
 }
 
-/* Show Seatmap button */
+/**
+ * @handleEvent: Click
+ * @selection: Show seat map button
+ *             - When user click show "Show Seatmap" button, all seat maps will be appeared
+ *             - And when user chick once more time, the current seat map will be appeared.
+ *             - AJAX is using in this selection.
+ */
 $('#showSeatmap').click(function () {
 
     var n = $("#sidebarCustom").css("left");
@@ -363,10 +444,6 @@ $('#showSeatmap').click(function () {
     $.getJSON("viewSeatmap.php", function (data, status) {
         if ($('#backgroundImage').length) { // detect id backgroundImage is exist or not
             $('#backgroundImage').remove();
-            /* Set current seatmap by default */
-            // if(currentSeatmapId)
-            //currentSeatmapId = data[0][0];
-            //currentSeatmapImage = data[0][1];
 
             var imageArray = [];
             var imageInfo = [];
@@ -413,12 +490,22 @@ $('#showSeatmap').click(function () {
     });
 });
 
+/**
+ * @method: Check the ID is exist in array JSON or not.
+ * @param:  data, id
+ * @return: bool. Return true if exist, false if not.
+ */
 function hasId(data, id) {
     return data.some(function (el) {
         return el.id === id;
     });
 }
 
+/**
+ * @method: Find value in object and update x, y of all element which mapping value
+ * @param:  object, value, x, y
+ * @return: None
+ */
 function findAndReplace(object, value, x, y) {
     for (var i in object) {
         if (typeof object[i] == typeof {}) {
@@ -432,6 +519,11 @@ function findAndReplace(object, value, x, y) {
     }
 }
 
+/**
+ * @method: Init both draggable and droppable element
+ * @param:  None
+ * @return: None
+ */
 function callDragAndDrop() {
     $(".drapProfile").draggable({
         cursor: "crosshair",
@@ -508,6 +600,11 @@ function callDragAndDrop() {
     });
 }
 
+/**
+ * @method: Init both draggable element which specific class name.
+ * @param:  className
+ * @return: None
+ */
 function initDragForClass(className) {
     $("." + className).draggable({
         cursor: "crosshair",
@@ -533,6 +630,11 @@ function initDragForClass(className) {
     });
 }
 
+/**
+ * @method: Init draggable element
+ * @param:  None
+ * @return: None
+ */
 function draggableElementLoadedInDatabase() {
     $(".dragged").draggable({
         cursor: "crosshair",
@@ -545,6 +647,11 @@ function draggableElementLoadedInDatabase() {
     });
 }
 
+/**
+ * @method: Init droppable element
+ * @param:  None
+ * @return: None
+ */
 function droppableElementLoadedInDatabase() {
     $("#backgroundImage").droppable({
         activeClass: 'ui-state-hover',
@@ -601,6 +708,11 @@ function droppableElementLoadedInDatabase() {
     });
 }
 
+/**
+ * @method: get original size of background image. Set the size to the container.
+ * @param: None
+ * @return: None
+ */
 function getSizeOfBackgroundImage(){
 
     if(!$('#backgroundImage').length){

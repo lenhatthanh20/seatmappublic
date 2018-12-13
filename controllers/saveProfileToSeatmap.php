@@ -9,12 +9,13 @@ $profile = new Profile();
 
 /* Check user session */
 if( isset($_SESSION["username"])) {
-    //$smarty->assign('username', $_SESSION["username"]);
+    /* Nothing here */
 }else {
     header('Location: /seatmap/controllers/index.php');
     die();
 }
 
+/* Handle POST method */
 if(isset($_POST['jsonObject'])){
     $jsonObject = json_decode($_POST['jsonObject']);
     $flag = 0;

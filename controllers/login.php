@@ -14,10 +14,13 @@ $success = true;
 $message = null;
 $error = [];
 
+/* Check session. If username session is valid
+   => Login successfully => Redirect to dashboard.php */
 if( isset($_SESSION["username"])) {
     header('Location: dashboard.php');
 }
 
+/* Handle POST request for login action */
 if (isset($_POST['username']) && isset($_POST['password'])) {
 
     /* Validation empty username and password */

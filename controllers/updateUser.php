@@ -45,8 +45,8 @@ if (isset($_GET['id'])) {
 
 
     }
+
     $smarty->display('updateUser.tpl');
-    //header('Location: http://localhost/seatMap/controllers/dashboard.php');
 }
 
 /* For POST request - Update data to database */

@@ -1,8 +1,5 @@
 <?php
 
-//$_FILES;
-
-//move_uploaded_file()
 session_start();
 
 require_once('../libs/custom/smarty/smartyConfig.php');

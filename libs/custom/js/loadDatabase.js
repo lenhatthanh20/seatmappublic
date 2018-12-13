@@ -1,14 +1,14 @@
+/* Global variables to hold current Seatmap ID and Image */
 var currentSeatmapId = $('#backgroundImage').attr('data-seatmapID');
 var currentSeatmapImage = $('#backgroundImage').attr('data-seatmapPath');
 
 /* Global JSON object to store all profile is loaded from database */
 var tempArrayJSON = [];
 
-
 /**
- * @method: Load all profiles to all seatmaps
+ * @method: Append all profile to current seat map
  * @param: arraySeatmap: store all profile from database
- *         seatmapID: seatmap to show data
+ *         seatmapID: current seat map to show data
  * @return: None
  */
 function loadAllProfileToSeatmap(arraySeatmap, seatmapID) {
@@ -26,6 +26,12 @@ function loadAllProfileToSeatmap(arraySeatmap, seatmapID) {
     }
 }
 
+/**
+ * @method: Load all profiles to all a array JSON
+ *          Then call loadAllProfileToSeatmap() to append all data in the array
+ * @param:  seatmapID: current seat map to show data
+ * @return: None
+ */
 function loadingProfileFromDatabase(seatmapID) {
     var showArrayJSON = [];
     $.post('loadingProfileFromDatabase.php',
@@ -62,6 +68,14 @@ function loadingProfileFromDatabase(seatmapID) {
         });
 }
 
+/**
+ * @method: Copy all data from arrayJson which mapping with current seat map ID.
+ *          After that, call loadAllProfileToSeatmap() for handle data to map
+ *          Then call loadAllProfileToSeatmap() to append all data in the array
+ * @param:  arrayJson: Global array that hold all profiles from database
+ *          seatmapID: current seat map to show data
+ * @return: None
+ */
 function loadingProfileFromArrayJson(arrayJson, seatmapID) {
     var temp = [];
     for (var i = 0; i < arrayJson.length; ++i) {
@@ -72,7 +86,13 @@ function loadingProfileFromArrayJson(arrayJson, seatmapID) {
     loadAllProfileToSeatmap(temp, seatmapID);
 }
 
-/* Show Seatmap button */
+/**
+ * @handleEvent: Click
+ * @selection: Show seat map button
+ *             - When user click show "Show Seatmap" button, all seat maps will be appeared
+ *             - And when user chick once more time, the current seat map will be appeared.
+ *             - AJAX is using in this selection.
+ */
 $('#showSeatmap').click(function () {
 
     var n = $("#sidebarCustom").css("left");
@@ -119,6 +139,13 @@ $('#showSeatmap').click(function () {
     });
 });
 
+/**
+ * @handleEvent: Click
+ * @selection: Choose seat map button
+ *             - When all seat map is displayed in screen, user can move the mouse in a specific seat map.
+ *             Choose seat map button will be hovered.
+ *             - User can click and choose what seat map is current.
+ */
 $(document).on("click", ".chooseSeatmap", function () {
     currentSeatmapId = $(this).attr('data-seatmapId');
     currentSeatmapImage = $(this).attr('data-seatmapImage');
@@ -130,12 +157,23 @@ $(document).on("click", ".chooseSeatmap", function () {
     getSizeOfBackgroundImage();
 });
 
+/**
+ * @handleEvent: Jquery document is ready
+ */
 $(document).ready(function () {
-    getSizeOfBackgroundImage();
-    loadingProfileFromDatabase(currentSeatmapId);
 
+    /* Get background image size (map size), set height and width for screen */
+    getSizeOfBackgroundImage();
+
+    /* Loading all profiles to current seat map */
+    loadingProfileFromDatabase(currentSeatmapId);
 });
 
+/**
+ * @method: get original size of background image. Set the size to the container.
+ * @param: None
+ * @return: None
+ */
 function getSizeOfBackgroundImage(){
 
     if(!$('#backgroundImage').length){
@@ -147,8 +185,6 @@ function getSizeOfBackgroundImage(){
         .backgroundImage
         .replace(/url\((['"])?(.*?)\1\)/gi, '$2')
         .split(',')[0];
-
-    // I just broke it up on newlines for readability
 
     var image = new Image();
     image.src = imageSrc;

@@ -5,12 +5,15 @@ require_once('../models/Profile.php');
 
 $profile = new Profile();
 
+/* Check session */
 if( isset($_SESSION["username"])) {
-    //$smarty->assign('username', $_SESSION["username"]);
-}else {
+    /* Nothing here */
+} else {
+    /* If session is not valid. Redirect to homepage. */
     header('Location: /seatmap/controllers/index.php');
     die();
 }
+
 /* Variables that will be parsed to Smarty template */
 $success = true;
 $message = null;
@@ -23,7 +26,7 @@ $uploadOk = 0;
 $moveImage = true;
 $imageFileType = strtolower(pathinfo($target_file,PATHINFO_EXTENSION));
 
-// Check if image file is a actual image or fake image
+/* Check if image file is a actual image or fake image */
 if(is_uploaded_file($_FILES['fileToUpload']['tmp_name'])) {
     $check = getimagesize($_FILES["fileToUpload"]["tmp_name"]);
     if($check !== false) {
@@ -56,7 +59,7 @@ if(is_uploaded_file($_FILES['fileToUpload']['tmp_name'])) {
     $moveImage = false;
 }
 
-// Check if $uploadOk is set to 0 by an error
+/* Check if $uploadOk is set to 0 by an error */
 if ($moveImage === true && $uploadOk === 1) {
     if (move_uploaded_file($_FILES["fileToUpload"]["tmp_name"], $target_file)) {
         $message = "The file ". basename( $_FILES["fileToUpload"]["name"]). " has been uploaded.";
@@ -125,6 +128,12 @@ if(isset($_POST["username"]) && isset($_POST["email"])) {
 
 }
 
+
+/**
+ * @method: Remove special chars and replaces multiple hyphens with single one.
+ * @param: $string
+ * @return: string after handle.
+ */
 function clean($string) {
     $string = str_replace(' ', '-', $string); // Replaces all spaces with hyphens.
     $string = preg_replace('/[^A-Za-z0-9\-.]/', '', $string); // Removes special chars.

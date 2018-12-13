@@ -10,6 +10,8 @@ $profile = new Profile();
 $seatmap = new Seatmap();
 
 global $_SESSION;
+
+/* Check session */
 if( isset($_SESSION["username"])) {
     $smarty->assign('username', $_SESSION["username"]);
 }else {
@@ -17,6 +19,8 @@ if( isset($_SESSION["username"])) {
     die();
 }
 
+
+/* Handling the message is parsed in deleteUser.php */
 if( isset($_SESSION["success"]) && isset($_SESSION["message"]) ) {
     $smarty->assign('success', $_SESSION["success"]);
     $smarty->assign('message', $_SESSION["message"]);
@@ -29,7 +33,8 @@ $arrayAllProfile = $profile->listAllProfile();
 
 /* List All Seatmap */
 $arrayAllSeatmap = $seatmap->listAllSeatmap();
-//var_dump($arrayAllUser);
+
+/* Parse data to smarty */
 $smarty->assign('arrayAllProfile', $arrayAllProfile);
 $smarty->assign('arrayAllSeatmap', $arrayAllSeatmap);
 
