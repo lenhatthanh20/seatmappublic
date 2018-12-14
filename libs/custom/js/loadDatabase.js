@@ -140,7 +140,7 @@ $('#showSeatmap').click(function () {
         } else {
             $('#backgroundImage').css('margin-left', '15px');
             $('#listAllSeatmap').empty();
-            $('#searchBox').empty();
+            $('#searchBox').remove();
             $('#seatmapCustom').append('<div id="backgroundImage" data-seatmapID="' + currentSeatmapId + '" style="background-image: url(' + currentSeatmapImage + ');">');
 
             loadingProfileFromArrayJson(tempArrayJSON, currentSeatmapId);
@@ -161,6 +161,7 @@ $(document).on("click", ".chooseSeatmap", function () {
     currentSeatmapImage = $(this).attr('data-seatmapImage');
     $('#backgroundImage').css('margin-left', '15px');
     $('#listAllSeatmap').empty();
+    $('#searchBox').remove();
     $('#seatmapCustom').append('<div id="backgroundImage" data-seatmapID="' + currentSeatmapId + '" style="background-image: url(' + currentSeatmapImage + ');">');
 
     loadingProfileFromArrayJson(tempArrayJSON, currentSeatmapId);
