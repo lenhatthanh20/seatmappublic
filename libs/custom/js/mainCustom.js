@@ -473,7 +473,7 @@ $('#showSeatmap').click(function () {
             var imageInfo = [];
 
             $('#seatmapCustom').prepend(
-                '<div class="input-group mb-3">\n' +
+                '<div id="searchBox" class="input-group mb-3">\n' +
                 '  <input id="searchAndFilterSeatMap" type="text" class="form-control" placeholder="Type the name of seat map" aria-label="Recipient\'s username" aria-describedby="basic-addon2">\n' +
                 '  <div class="input-group-append">\n' +
                 '    <button class="btn btn-outline-secondary" type="button">Search</button>\n' +
@@ -506,6 +506,7 @@ $('#showSeatmap').click(function () {
         } else {
             $('#backgroundImage').css('margin-left', '15px');
             $('#listAllSeatmap').empty();
+            $('#searchBox').empty();
             $('#seatmapCustom').append('<div id="backgroundImage" data-seatmapID="' + currentSeatmapId + '" style="background-image: url(' + currentSeatmapImage + ');">');
             if(arrayJSON.length > 0){
                 for (var i = 0; i < arrayJSON.length; ++i) {
