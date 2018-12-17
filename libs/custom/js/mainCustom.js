@@ -453,7 +453,7 @@ function removeSeatmap(id, path) {
 /**
  * @handleEvent: Click
  * @selection: Show seat map button
- *             - When user click show "Show Seatmap" button, all seat maps will be appeared
+ *             - When user click show "Show SeatMap" button, all seat maps will be appeared
  *             - And when user chick once more time, the current seat map will be appeared.
  *             - AJAX is using in this selection.
  */
@@ -484,8 +484,8 @@ $('#showSeatmap').click(function () {
 
             for (i = 0; i < data.length; i++) {
 
-                imageInfo[i] = 'Seatmap infomation\n' +
-                    'Seatmap name: ' + data[i][2] + '\n' +
+                imageInfo[i] = 'SeatMap infomation\n' +
+                    'SeatMap name: ' + data[i][2] + '\n' +
                     'File file type: ' + data[i][4] + '\n' +
                     'File file type: ' + data[i][3] + 'B\n'
                 imageArray[i] =

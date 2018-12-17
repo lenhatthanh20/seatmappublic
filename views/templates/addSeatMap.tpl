@@ -159,10 +159,10 @@
                     </div>
                 {/if}
 
-                <form action="../controllers/addSeatmap.php" method="POST" enctype="multipart/form-data">
+                <form action="../controllers/addSeatMap.php" method="POST" enctype="multipart/form-data">
                     <div class="form-group">
-                        <input type="text" class="form-control form-control-lg" placeholder="Seatmap name" name="seatmapName"
-                             value="{$seatmapName}"  />
+                        <input type="text" class="form-control form-control-lg" placeholder="Seat map name" name="seatMapName"
+                             value="{$seatMapName}"  />
                     </div>
                     <div class="form-group">
                         <div class="alert alert-info">

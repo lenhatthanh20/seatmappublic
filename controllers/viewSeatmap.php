@@ -1,9 +1,9 @@
 <?php
 
 require_once('../libs/custom/smarty/smartyConfig.php');
-require_once('../models/Seatmap.php');
+require_once('../models/SeatMap.php');
 
-$seatmap = new Seatmap();
+$seatmap = new SeatMap();
 
 /* Load all seatmaps from database */
 $seatmapArray = $seatmap->listAllSeatmap();

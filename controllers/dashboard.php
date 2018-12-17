@@ -3,11 +3,11 @@ session_start();
 
 require_once('../libs/custom/smarty/smartyConfig.php');
 require_once('../models/Profile.php');
-require_once('../models/Seatmap.php');
+require_once('../models/SeatMap.php');
 
 
 $profile = new Profile();
-$seatmap = new Seatmap();
+$seatmap = new SeatMap();
 
 global $_SESSION;
 
@@ -31,7 +31,7 @@ if( isset($_SESSION["success"]) && isset($_SESSION["message"]) ) {
 /* List All Users */
 $arrayAllProfile = $profile->listAllProfile();
 
-/* List All Seatmap */
+/* List All SeatMap */
 $arrayAllSeatmap = $seatmap->listAllSeatmap();
 
 /* Parse data to smarty */

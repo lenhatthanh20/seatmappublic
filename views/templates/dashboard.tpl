@@ -18,7 +18,7 @@
 <!-- Navbar -->
 <nav class="navbar navbar-expand-sm navbar-dark bg-dark fixed-top">
 
-    <button id="showSeatmap" type="button" class="btn btn-default" style="margin-left:15px;">Show Seatmap</button>
+    <button id="showSeatmap" type="button" class="btn btn-default" style="margin-left:15px;">Show SeatMap</button>
 
     <div class="container">
         <a class="navbar-brand" href="/seatMap/controllers/index.php">Seat Map Management</a>
@@ -50,7 +50,7 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="addSeatmap.php">
+                    <a class="nav-link" href="addSeatMap.php">
                         <button type="button" class="btn btn-block btn-info">Add Seatmap</button>
                     </a>
                 </li>
@@ -131,7 +131,7 @@
                     </div>
 
                 <div id="listAllSeatmap" class="row">
-                    <!-- Seatmap image will be here -->
+                    <!-- SeatMap image will be here -->
                 </div>
 
             </div>

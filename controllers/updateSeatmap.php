@@ -4,9 +4,9 @@
 session_start();
 
 require_once('../libs/custom/smarty/smartyConfig.php');
-require_once('../models/Seatmap.php');
+require_once('../models/SeatMap.php');
 
-$seatmap = new Seatmap();
+$seatmap = new SeatMap();
 
 /* Check authentication by session */
 if(isset($_SESSION["username"])) {
@@ -82,13 +82,13 @@ if(isset($_POST['id']) && isset($_POST['seatmapName'])){
         $smarty->assign('seatmapPath', $arraySeatmap[0][1]);
     }
     if(empty($_POST['seatmapName'])){
-        array_push($errorPOST,  'Seatmap name is required!');
+        array_push($errorPOST,  'SeatMap name is required!');
         $success = false;
     }
 
     /* Check the new seatmap name is exist or not */
     if($seatmap->checkExistNameExceptId($seatmapName, $id)){
-        array_push($errorPOST,  'Seatmap name is exist in database!');
+        array_push($errorPOST,  'SeatMap name is exist in database!');
         $success = false;
     }
 

@@ -1,8 +1,8 @@
 <?php
 session_start();
-require_once('../models/Seatmap.php');
+require_once('../models/SeatMap.php');
 
-$seatmap = new Seatmap();
+$seatmap = new SeatMap();
 
 if( isset($_SESSION["username"])) {
 
