@@ -89,7 +89,7 @@
                         <!-- <h5 class="card-title">Members have no seats</h5> -->
                         <!-- Search form -->
                         <div class="input-group">
-                            <input id="searchAndFilter" type="text" class="form-control" placeholder="Search profile">
+                            <input id="searchAndFilter" type="text" class="form-control" placeholder="Profile">
                             <div class="input-group-append">
                                 <button class="btn btn-secondary" type="button">
                                     <i class="fa fa-search"></i>
