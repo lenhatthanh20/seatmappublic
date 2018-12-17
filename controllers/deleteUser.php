@@ -30,7 +30,6 @@ if (isset($_POST['id']) && isset($_POST['path'])) {
         $message = 'Can not delete this user!';
     }
 
-    $_SESSION["success"] = $success;
-    $_SESSION["message"] = $message;
+
     header('Location: dashboard.php');
 }

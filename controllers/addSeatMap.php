@@ -23,7 +23,7 @@ $basicValidation = new BasicValidation();
 if (isset($_SESSION["username"])) {
     $smarty->assign('username', $_SESSION["username"]);
 } else {
-    $utility->redirect('/seatmap/controllers/index.php');
+    $utility->redirect('/seatMap/controllers/index.php');
 }
 
 /* handle image */
