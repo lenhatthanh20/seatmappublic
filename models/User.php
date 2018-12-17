@@ -1,10 +1,20 @@
 <?php
 require_once ('databaseConfig.php');
 
-$database = new Database();
-$link = $database->connect();
-
 class User {
+
+    /**
+     * Call this method to get singleton
+     * @return Database
+     */
+    public static function Instance()
+    {
+        static $database = null;
+        if ($database === null) {
+            $database = new Database();
+        }
+        return $database;
+    }
 
     /**
      * @method: Add user
@@ -12,9 +22,9 @@ class User {
      * @return: bool. Return true if add user successfully, false if failure.
      */
     public function addUser($username, $password) {
-        $username = mysqli_real_escape_string($GLOBALS['link'], $username);
+        $username = mysqli_real_escape_string((User::Instance())->connect(), $username);
         $sql = "INSERT INTO User (username, password) VALUES ('{$username}', '{$password}')";
-        $result = $GLOBALS['database']->databaseQuery($sql);
+        $result = (User::Instance())->databaseQuery($sql);
         if(isset($result)) {
             return true;
         } else {
@@ -28,14 +38,14 @@ class User {
      * @return: bool. Return true if username is not exist, false if username is exist.
      */
     public function checkExistUsername($username) {
-        $username = mysqli_real_escape_string($GLOBALS['link'], $username);
+        $username = mysqli_real_escape_string((User::Instance())->connect(), $username);
         $sql = "SELECT IF( EXISTS(
                             SELECT username
                             FROM user
                             WHERE username = '{$username}'
                             LIMIT 1), 'exist', 'notExist')";
-        $result = $GLOBALS['database']->databaseQuery($sql);
-        $result = $GLOBALS['database']->databaseFetch($result);
+        $result = (User::Instance())->databaseQuery($sql);
+        $result = (User::Instance())->databaseFetch($result);
         if($result[0][0] === 'notExist') {
             return true;
         } else {
@@ -49,10 +59,10 @@ class User {
      * @return: object|bool. Return object if username is selected, false if username is not exist.
      */
     public function loginHandle($username){
-        $username = mysqli_real_escape_string($GLOBALS['link'], $username);
+        $username = mysqli_real_escape_string((User::Instance())->connect(), $username);
         $sql = "SELECT * FROM user WHERE username = '{$username}'";
-        $result = $GLOBALS['database']->databaseQuery($sql);
-        $result = $GLOBALS['database']->databaseFetch($result);
+        $result = (User::Instance())->databaseQuery($sql);
+        $result = (User::Instance())->databaseFetch($result);
         if($result) {
             return $result;
         } else {

@@ -1,179 +1,189 @@
 <?php
 require_once ('databaseConfig.php');
 
-$database = new Database();
-$link = $database->connect();
-
 class Seatmap {
 
     /**
-     * @method: Add a seatmap
-     * @param: $name, $type, $size, $path
-     * @return: bool. Return true if successful, false if failure.
+     * Call this method to get singleton
+     * @return Database
      */
-    public function addSeatmap($name, $type, $size, $path) {
-        $name = mysqli_real_escape_string($GLOBALS['link'], $name);
-        $type = mysqli_real_escape_string($GLOBALS['link'], $type);
-        $size = mysqli_real_escape_string($GLOBALS['link'], $size);
-        $path = mysqli_real_escape_string($GLOBALS['link'], $path);
-        $sql = "INSERT INTO seatmap (name, type, path, size) 
-                            VALUES ('{$name}', '{$type}', '{$path}', '{$size}')";
-        $result = $GLOBALS['database']->databaseQuery($sql);
-        if(isset($result)) {
-            return true;
-        } else {
-            return false;
+    public static function Instance()
+    {
+        static $database = null;
+        if ($database === null) {
+            $database = new Database();
         }
+        return $database;
     }
 
     /**
-     * @method: List all seatmaps
-     * @param: none
-     * @return: object|bool. Return object if successful, false if failure.
+     * Add a seat map
+     * @param $name
+     * @param $type
+     * @param $size
+     * @param $path
+     * @return bool
+     */
+    public function addSeatmap($name, $type, $size, $path) {
+        $name = mysqli_real_escape_string((Seatmap::Instance())->connect(), $name);
+        $type = mysqli_real_escape_string((Seatmap::Instance())->connect(), $type);
+        $size = mysqli_real_escape_string((Seatmap::Instance())->connect(), $size);
+        $path = mysqli_real_escape_string((Seatmap::Instance())->connect(), $path);
+        $sql = "INSERT INTO seatmap (name, type, path, size) 
+                            VALUES ('{$name}', '{$type}', '{$path}', '{$size}')";
+        $result = (Seatmap::Instance())->databaseQuery($sql);
+        if(isset($result)) {
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * List all seat maps
+     * @return bool
      */
     public function listAllSeatmap() {
         $sql = "SELECT * FROM seatmap";
-        $result = $GLOBALS['database']->databaseQuery($sql);
-        $result = $GLOBALS['database']->databaseFetch($result);
+        $result = (Seatmap::Instance())->databaseQuery($sql);
+        $result = (Seatmap::Instance())->databaseFetch($result);
         if($result) {
             return $result;
-        } else {
-            return false;
         }
+        return false;
     }
 
     /**
-     * @method: Select a seatmap
-     * @param: $id
-     * @return: object|bool. Return object if successful, false if failure.
+     * Select a seat map
+     * @param $id
+     * @return bool
      */
     public function selectSeatmap($id) {
-        $id = mysqli_real_escape_string($GLOBALS['link'], $id);
+        $id = mysqli_real_escape_string((Seatmap::Instance())->connect(), $id);
         $sql = "SELECT * FROM seatmap WHERE id='{$id}'";
-        $result = $GLOBALS['database']->databaseQuery($sql);
-        $result = $GLOBALS['database']->databaseFetch($result);
+        $result = (Seatmap::Instance())->databaseQuery($sql);
+        $result = (Seatmap::Instance())->databaseFetch($result);
         if($result) {
             return $result;
-        } else {
-            return false;
         }
+        return false;
     }
 
     /**
-     * @method: Update a seatmap without image path
-     * @param: $id, $name
-     * @return: bool. Return true if successful, false if failure.
+     * Update a seat map without image path
+     * @param $id
+     * @param $name
+     * @return bool
      */
     public function updateSeatmapWithoutPath($id, $name) {
-        $name = mysqli_real_escape_string($GLOBALS['link'], $name);
-        $id = mysqli_real_escape_string($GLOBALS['link'], $id);
+        $name = mysqli_real_escape_string((Seatmap::Instance())->connect(), $name);
+        $id = mysqli_real_escape_string((Seatmap::Instance())->connect(), $id);
         $sql = "UPDATE seatmap SET name='{$name}'
                 WHERE id = '{$id}'";
-        $result = $GLOBALS['database']->databaseQuery($sql);
+        $result = (Seatmap::Instance())->databaseQuery($sql);
         if($result){
             return true;
-        } else {
-            return false;
         }
+        return false;
     }
+
     /**
-     * @method: Update a seatmap with path
-     * @param: $id, $name, $path
-     * @return: bool. Return true if successful, false if failure.
+     * Update a seatmap with path
+     * @param $id
+     * @param $name
+     * @param $path
+     * @param $size
+     * @param $type
+     * @return bool
      */
     public function updateSeatmapWithPath($id, $name, $path, $size, $type) {
-        $id = mysqli_real_escape_string($GLOBALS['link'], $id);
-        $name = mysqli_real_escape_string($GLOBALS['link'], $name);
-        $type = mysqli_real_escape_string($GLOBALS['link'], $type);
-        $size = mysqli_real_escape_string($GLOBALS['link'], $size);
-        $path = mysqli_real_escape_string($GLOBALS['link'], $path);
+        $id = mysqli_real_escape_string((Seatmap::Instance())->connect(), $id);
+        $name = mysqli_real_escape_string((Seatmap::Instance())->connect(), $name);
+        $type = mysqli_real_escape_string((Seatmap::Instance())->connect(), $type);
+        $size = mysqli_real_escape_string((Seatmap::Instance())->connect(), $size);
+        $path = mysqli_real_escape_string((Seatmap::Instance())->connect(), $path);
         $sql = "UPDATE seatmap SET name='{$name}', path='{$path}', size='{$size}', type='{$type}'
                 WHERE id = '{$id}'";
-        $result = $GLOBALS['database']->databaseQuery($sql);
+        $result = (Seatmap::Instance())->databaseQuery($sql);
         if($result){
             return true;
-        } else {
-            return false;
         }
+        return false;
     }
 
     /**
-     * @method: Delete a seatmap with id
-     * @param: $id
-     * @return: Bool. Return true if successful, false if failure.
+     * Delete a seat map with id
+     * @param $id
+     * @return bool
      */
     public function deleteSeatmap($id) {
-        $id = mysqli_real_escape_string($GLOBALS['link'], $id);
+        $id = mysqli_real_escape_string((Seatmap::Instance())->connect(), $id);
         $sql = "DELETE FROM seatmap WHERE id = '{$id}'";
-        $result = $GLOBALS['database']->databaseQuery($sql);
+        $result = (Seatmap::Instance())->databaseQuery($sql);
         if($result) {
             return true;
-        } else {
-            return false;
         }
+        return false;
     }
 
     /**
-     * @method: Check the id is exist or not
-     * @param: $id
-     * @return: Bool. Return true if exist, false if not.
+     * Check the id is exist or not
+     * @param $id
+     * @return bool
      */
     public function checkValidId($id) {
-        $id = mysqli_real_escape_string($GLOBALS['link'], $id);
+        $id = mysqli_real_escape_string((Seatmap::Instance())->connect(), $id);
         $sql = "SELECT IF( EXISTS(
                             SELECT id
                             FROM seatmap
                             WHERE id = '{$id}'
                             LIMIT 1), 'exist', 'notexist')";
-        $result = $GLOBALS['database']->databaseQuery($sql);
-        $result = $GLOBALS['database']->databaseFetch($result);
+        $result = (Seatmap::Instance())->databaseQuery($sql);
+        $result = (Seatmap::Instance())->databaseFetch($result);
         if($result[0][0] === 'exist') {
             return true;
-        } else {
-            return false;
         }
+        return false;
     }
 
     /**
-     * @method: Check a seatmap name is exist or not
-     * @param: $name
-     * @return: bool. Return true if the seatmap name is exist, false if not exist.
+     * Check a seat map name is exist or not
+     * @param $name
+     * @return bool
      */
     public function checkExistName($name) {
-        $name = mysqli_real_escape_string($GLOBALS['link'], $name);
+        $name = mysqli_real_escape_string((Seatmap::Instance())->connect(), $name);
         $sql = "SELECT IF( EXISTS(
                             SELECT name
                             FROM seatmap
                             WHERE name = '{$name}'
                             LIMIT 1), 'exist', 'notexist')";
-        $result = $GLOBALS['database']->databaseQuery($sql);
-        $result = $GLOBALS['database']->databaseFetch($result);
+        $result = (Seatmap::Instance())->databaseQuery($sql);
+        $result = (Seatmap::Instance())->databaseFetch($result);
         if($result[0][0] === 'exist') {
             return true;
-        } else {
-            return false;
         }
+        return false;
     }
 
     /**
-     * @method: Check seatmap name is exist or not except specific ID
-     * @param: $name, $id
-     * @return: bool. Return true if email is exist, false if email is not exist.
+     * Check seatmap name is exist or not except specific ID
+     * @param $name
+     * @param $id
+     * @return bool
      */
     public function checkExistNameExceptId($name, $id) {
-        $id = mysqli_real_escape_string($GLOBALS['link'], $id);
-        $name = mysqli_real_escape_string($GLOBALS['link'], $name);
+        $id = mysqli_real_escape_string((Seatmap::Instance())->connect(), $id);
+        $name = mysqli_real_escape_string((Seatmap::Instance())->connect(), $name);
         $sql = "SELECT IF( EXISTS(
                             SELECT name
                             FROM seatmap
                             WHERE (name = '{$name}' AND id <> '{$id}')
                             LIMIT 1), 'exist', 'notexist')";
-        $result = $GLOBALS['database']->databaseQuery($sql);
-        $result = $GLOBALS['database']->databaseFetch($result);
+        $result = (Seatmap::Instance())->databaseQuery($sql);
+        $result = (Seatmap::Instance())->databaseFetch($result);
         if($result[0][0] === 'exist') {
             return true;
-        } else {
-            return false;
         }
+        return false;
     }
 }
