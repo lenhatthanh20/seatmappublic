@@ -1,30 +1,26 @@
 <?php
 session_start();
 require_once('../models/SeatMap.php');
+require_once('../models/Utility.php');
 
-$seatmap = new SeatMap();
+$seatMap = new SeatMap();
+$utility = new Utility();
 
-if( isset($_SESSION["username"])) {
-
-}else {
-    header('Location: /seatmap/controllers/index.php');
-    die();
+/* Check session */
+if(!isset($_SESSION["username"])) {
+    $utility->redirect('/seatMap/controllers/index.php');
 }
-
-/* Variable to parse to jquery */
-$error = [];
 
 if(isset($_POST['id']) && isset($_POST['path'])) {
     $id = htmlspecialchars($_POST['id']);
     $path = htmlspecialchars($_POST['path']);
 
     /* Check id is exist in database or not */
-    $isExist = $seatmap->checkValidId($id);
+    $isExist = $seatMap->checkValidId($id);
     if(!$isExist){
-        array_push($error, 'Id is not exist in database!');
-        die();
+        echo false;
     } else {
-        $success = $seatmap->deleteSeatmap($id);
+        $success = $seatMap->deleteSeatmap($id);
         if($success === true) {
             unlink($path);
             echo true;

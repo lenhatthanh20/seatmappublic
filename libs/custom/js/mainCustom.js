@@ -120,7 +120,6 @@ $(document).ready(function () {
      */
     $(document).on("click", ".removeUser", function () {
         var user_name = $(this).attr('data-user-name');
-        console.log($(this).hasClass('ui-draggable'));
         var result = confirm("Do you want to delete user: " + user_name + ' ?');
         if(result){
             // Nothing here. Waiting data is deleted
