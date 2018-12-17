@@ -1,10 +1,5 @@
 <?php
 
-CONST _IMAGE_SIZE_10MB = 10000000;
-CONST _MIN_LENGTH = 6;
-CONST _MAX_LENGTH = 25;
-CONST _IMAGE_SEAT_MAP_DIR = "../images/seatMap/";
-
 session_start();
 
 require_once('../libs/custom/smarty/smartyConfig.php');
@@ -43,7 +38,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         /* Rename image when file name is exist */
         if (file_exists($imageFilePath)) {
-            $filePath = $imageValidation->renameFileWhenExist($uploadFile["name"]);
+            $imageFilePath = $imageValidation->renameFileWhenExist($uploadFile["name"]);
         }
 
         /* Validation image */
