@@ -186,4 +186,14 @@ class SeatMap {
         }
         return false;
     }
+
+    public function getOldPathImage($id) {
+        $id = mysqli_real_escape_string((SeatMap::Instance())->connect(), $id);
+        $arraySeatMap = $this->selectSeatmap($id);
+        if ($arraySeatMap === false) {
+            return false;
+        }
+        return $arraySeatMap[0][1];
+    }
+
 }

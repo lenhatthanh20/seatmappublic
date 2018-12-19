@@ -8,49 +8,38 @@ require_once('../libs/custom/handle/constantMessage.php');
 require_once('../models/SeatMap.php');
 require_once('../models/Utility.php');
 require_once('../models/basicValidation.php');
-require_once('../models/imageValidation.php');
-
-$seatMap = new SeatMap();
-$utility = new Utility();
-$imageValidation = new ImageValidation();
-$basicValidation = new BasicValidation();
+require_once('../models/handleImage.php');
 
 /* Check authentication by session */
-if(isset($_SESSION["username"])) {
+if (isset($_SESSION["username"])) {
     $smarty->assign('username', $_SESSION["username"]);
-}else {
-    header('Location: /seatmap/controllers/index.php');
-    die();
+} else {
+    $utility->redirect('/seatMap/controllers/index.php');
 }
 
-/* Variables that will be parsed to Smarty template */
-$success = true;
-$message = null;
-$errorGET = [];
-$errorPOST = [];
-
 /* Handle GET request */
-if(isset($_GET['id'])){
+if (isset($_GET['id'])) {
+    $basicValidation = new BasicValidation();
+    $seatMap = new SeatMap();
+
     $id = htmlspecialchars($_GET['id']);
 
-    /* Validation empty username and email */
-    if(empty($_GET['id'])){
-        array_push($errorGET,  _ID_REQUIRED);
-    }
+    /** Validation id */
+    $basicValidation->validationId($id);
+    /** Get error if have any */
+    $getError = $basicValidation->getError();
 
-    /* Check ID is exist or not */
-    if(!$seatMap->checkValidId($id)) {
-        array_push($errorGET,  _ID_NOT_EXIST);
-    }
-
-    if(sizeof($errorGET)){
-        $smarty->assign('errorGET', $errorGET);
+    /** If have any error */
+    if (sizeof($getError)) {
+        $smarty->assign('errorGET', $getError);
     } else {
-        /* Show data to seat map form */
+        /** Show data to seat map form */
         $arraySeatMap = $seatMap->selectSeatmap($id);
-        if($arraySeatMap === false){
-            array_push($errorPOST,  'Query database failure.');
+        if ($arraySeatMap === false) {
+            array_push($errorGET, 'Query database failure.');
+            $smarty->assign('errorGET', $errorGET);
         }
+
         $smarty->assign('id', $id);
         $smarty->assign('seatmapName', $arraySeatMap[0][2]);
         $smarty->assign('seatmapPath', $arraySeatMap[0][1]);
@@ -58,93 +47,57 @@ if(isset($_GET['id'])){
 }
 
 /* Handle POST request */
-if(isset($_POST['id']) && isset($_POST['seatmapName'])){
+if (isset($_POST['id']) && isset($_POST['seatmapName'])) {
+    $basicValidation = new BasicValidation();
+    $handleImage = new HandleImage();
+    $seatMap = new SeatMap();
+
+    $uploadFile = $_FILES['fileToUpload'];
     $id = htmlspecialchars($_POST['id']);
     $seatMapName = htmlspecialchars($_POST['seatmapName']);
-    $oldImage = null;
+    $oldImage = $seatMap->getOldPathImage($id);
 
-    /* Validation length of seat map name */
-    if (!$basicValidation->lengthOfName($seatMapName, _MIN_LENGTH, _MAX_LENGTH)) {
-        array_push($errorPOST, _LENGTH_INVALID);
-        $success = false;
-    }
+    /** Validation seatMap Name */
+    $basicValidation->validationNameExceptId($seatMapName, $id);
 
-    /* Validation empty id and seat map name */
-    if(empty($_POST['id'])){
-        array_push($errorPOST,  _ID_REQUIRED);
-        $success = false;
-    } else {
-        $arraySeatMap = $seatMap->selectSeatmap($id);
-        if($arraySeatMap === false){
-            array_push($errorPOST,  _QUERY_FAILURE);
+    /** Validation id */
+    $basicValidation->validationId($id);
+
+    /** Handle and validation uploaded image */
+    $notUseOldImage = $handleImage->uploadImageExceptOldImage($uploadFile);
+
+    /** Get error from handleImage object, validation seat map name and ID */
+    $errorPOST = array_merge($basicValidation->getError(), $handleImage->getImageError());
+
+    /** Save database with new image and no error */
+    if ($notUseOldImage && (!sizeof($errorPOST))) {
+        if ($seatMap->updateSeatmapWithPath($id, $seatMapName, $handleImage->getImagePath(), $handleImage->getImageSize(), $handleImage->getImageType())) {
+            /** Save new image and remove old image */
+            $handleImage->removeOldFileAndMoveNewFile($uploadFile, $oldImage, $handleImage->getImagePath());
+        } else {
+            array_push($errorPOST, _CAN_NOT_SAVE_DATABASE);
         }
-        $oldImage = $arraySeatMap[0][1];
+
+        $smarty->assign('seatmapPath', $handleImage->getImagePath());
+    /** Save database with old image and no error */
+    } elseif ((!$notUseOldImage) && (!sizeof($errorPOST))) {
+        if (!$seatMap->updateSeatmapWithoutPath($id, $seatMapName)) {
+            array_push($errorPOST, _CAN_NOT_SAVE_DATABASE);
+        }
         $smarty->assign('seatmapPath', $oldImage);
     }
 
-    /* Validation empty seatMap Name */
-    if(empty($seatMapName)){
-        array_push($errorPOST,  _SEAT_MAP_NAME_REQUIRED);
-        $success = false;
-    }
-
-    /* Check the new seat map name is exist or not */
-    if($seatMap->checkExistNameExceptId($seatMapName, $id)){
-        array_push($errorPOST,  _SEAT_MAP_NAME_EXIST);
-        $success = false;
-    }
-
-    /* Check image is upload or not */
-    if (is_uploaded_file($_FILES['fileToUpload']['tmp_name'])) {
-
-        $uploadFile = $_FILES['fileToUpload'];
-        $filePath = _IMAGE_SEAT_MAP_DIR . $utility->cleanSpecialChars(basename($uploadFile['name']));
-        $imageFileType = strtolower(pathinfo($filePath, PATHINFO_EXTENSION));
-
-        /* Rename image when file name is exist */
-        if (file_exists($filePath)) {
-            $filePath = $imageValidation->renameFileWhenExist($uploadFile['name']);
-        }
-
-        /* Validation image */
-        $errorPOST = $imageValidation->imageValidationFull($uploadFile, $imageFileType);
-        if (sizeof($errorPOST)) {
-            $success = false;
-        }
-
-        /* No error when upload image. Save database with new image */
-        if($success === true){
-            if($seatMap->updateSeatmapWithPath($id, $seatMapName, $filePath, $uploadFile['size'], $imageFileType)){
-                $smarty->assign('message', _UPDATE_SEAT_MAP_SUCCESS);
-                //remove old image
-                if(file_exists($oldImage)) {
-                    unlink($oldImage);
-                }
-                move_uploaded_file($uploadFile['tmp_name'], $filePath);
-            } else {
-                array_push($errorPOST, _CAN_NOT_SAVE_DATABASE);
-            }
-
-            $smarty->assign('seatmapPath', $filePath);
-        }
-    } else { /* Save database with old image */
-        if($success === true) {
-            if($seatMap->updateSeatmapWithoutPath($id, $seatMapName)){
-                $smarty->assign('message', _UPDATE_SEAT_MAP_SUCCESS);
-            } else {
-                array_push($errorPOST, _CAN_NOT_SAVE_DATABASE);
-            }
-        }
-    }
-
-    if(sizeof($errorPOST)){
+    /** If have any error. Parse to view */
+    if (sizeof($errorPOST)) {
         $smarty->assign('errorPOST', $errorPOST);
+        $smarty->assign('success', false);
+        $smarty->assign('seatmapPath', $oldImage);
+    } else {
+        $smarty->assign('message', _UPDATE_SEAT_MAP_SUCCESS);
+        $smarty->assign('success', true);
     }
 
     $smarty->assign('id', $id);
     $smarty->assign('seatmapName', $seatMapName);
-
-    $smarty->assign('success', $success);
 }
-
 $smarty->display('updateSeatmap.tpl');

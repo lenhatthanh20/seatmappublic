@@ -5,14 +5,8 @@ session_start();
 require_once('../libs/custom/smarty/smartyConfig.php');
 require_once('../libs/custom/handle/constantMessage.php');
 require_once('../models/SeatMap.php');
-require_once('../models/Utility.php');
-require_once('../models/imageValidation.php');
+require_once('../models/handleImage.php');
 require_once('../models/basicValidation.php');
-
-$seatMap = new SeatMap();
-$utility = new Utility();
-$imageValidation = new ImageValidation();
-$basicValidation = new BasicValidation();
 
 /* Check session */
 if (isset($_SESSION["username"])) {
@@ -21,75 +15,53 @@ if (isset($_SESSION["username"])) {
     $utility->redirect('/seatMap/controllers/index.php');
 }
 
-/* handle image */
+/** Handle POST request */
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    $handleImage = new HandleImage();
+    $basicValidation = new BasicValidation();
 
-    $success = true;
-    $error = [];
+    $uploadFile = $_FILES['fileToUpload'];
+    $seatMapName = htmlspecialchars($_POST['seatMapName']);
 
-    /* Image is uploaded */
-    if (is_uploaded_file($_FILES['fileToUpload']['tmp_name'])) {
+    /** Validation seat map name */
+    $basicValidation->validationName($seatMapName);
 
-        /* Local variables */
-        $seatMapName = htmlspecialchars($_POST['seatMapName']);
-        $uploadFile = $_FILES['fileToUpload'];
-        $imageFilePath = _IMAGE_SEAT_MAP_DIR . $utility->cleanSpecialChars(basename($uploadFile["name"]));
-        $imageFileType = strtolower(pathinfo($imageFilePath, PATHINFO_EXTENSION));
+    /** Handle and validation uploaded image */
+    $handleImage->uploadImage($uploadFile);
 
-        /* Rename image when file name is exist */
-        if (file_exists($imageFilePath)) {
-            $imageFilePath = $imageValidation->renameFileWhenExist($uploadFile["name"]);
+    /** Get error from handleImage object and validation seat map name */
+    $error = array_merge($basicValidation->getError(), $handleImage->getImageError());
+
+    /** Save database if no error is detected */
+    if (!sizeof($error)) {
+        $seatMap = new SeatMap();
+
+        /** Store image */
+        $handleImage->moveFileUploaded($uploadFile);
+
+        /** Save to database */
+        $success = $seatMap->addSeatMap(
+            $seatMapName,
+            $handleImage->getImageType(),
+            $handleImage->getImageSize(),
+            $handleImage->getImagePath()
+        );
+        if (!$success) {
+            array_push($error, _CAN_NOT_SAVE_DATABASE);
         }
-
-        /* Validation image */
-        $error = $imageValidation->imageValidationFull($uploadFile, $imageFileType);
-        if (sizeof($error)) {
-            $success = false;
-        }
-
-        /* Validation length of seat map name */
-        if (!$basicValidation->lengthOfName($seatMapName, _MIN_LENGTH, _MAX_LENGTH)) {
-            array_push($error, _LENGTH_INVALID);
-            $success = false;
-        }
-
-        /* Validation empty seatMapName */
-        if (empty($_POST['seatMapName'])) {
-            array_push($error, _SEAT_MAP_NAME_REQUIRED);
-            $success = false;
-        }
-
-        /* Check exist seat map name */
-        if ($seatMap->checkExistName($seatMapName)) {
-            array_push($error, _SEAT_MAP_NAME_EXIST);
-            $success = false;
-        }
-
-        /* Save database */
-        if ($success) {
-            move_uploaded_file($_FILES["fileToUpload"]["tmp_name"], $imageFilePath);
-            $success = $seatMap->addSeatMap($seatMapName, $imageFileType, $uploadFile["size"], $imageFilePath);
-            if (!$success) {
-                array_push($error, _CAN_NOT_SAVE_DATABASE);
-            } else {
-                $smarty->assign('message', _ADD_SEAT_MAP_SUCCESS);
-            }
-        }
-    } else {
-        /* Image is not uploaded */
-        array_push($error, _NOT_UPLOAD);
-        $success = false;
     }
 
-    $smarty->assign('seatMapName', $_POST['seatMapName']);
-
-    /* If have any error */
+    /** If have any error */
     if (sizeof($error)) {
         $smarty->assign('error', $error);
+        $smarty->assign('success', false);
+    } else {
+        $smarty->assign('message', _ADD_SEAT_MAP_SUCCESS);
+        $smarty->assign('success', true);
     }
 
-    /* Parse data to smarty */
-    $smarty->assign('success', $success);
+    /** Parse data to smarty */
+    $smarty->assign('seatMapName', $_POST['seatMapName']);
 }
 
 $smarty->display('addSeatMap.tpl');
