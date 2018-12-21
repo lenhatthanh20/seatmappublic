@@ -4,7 +4,7 @@ require_once('../libs/custom/handle/constantMessage.php');
 
 class basicValidation {
 
-    private $error = [];
+    private $error;
 
     /**
      * Call this method to get singleton of Utility Object
@@ -20,7 +20,7 @@ class basicValidation {
     }
 
     public function setError($errorMessage){
-        array_push($this->error,  $errorMessage);
+        $this->error = $errorMessage;
     }
 
     public function getError(){
@@ -39,42 +39,52 @@ class basicValidation {
     }
 
     public function validationName($name) {
-        if(!$this->lengthOfName($name, _MIN_LENGTH, _MAX_LENGTH)) {
-            $this->setError(_LENGTH_INVALID);
-        }
 
         if(empty($name)) {
             $this->setError(_SEAT_MAP_NAME_REQUIRED);
+            return false;
         }
-
         if ((basicValidation::Instance())->checkExistName($name)) {
             $this->setError(_SEAT_MAP_NAME_EXIST);
+            return false;
         }
+        if(!$this->lengthOfName($name, _MIN_LENGTH, _MAX_LENGTH)) {
+            $this->setError(_LENGTH_INVALID);
+            return false;
+        }
+        return true;
     }
 
     public function validationId ($id) {
         /* Validation empty username */
         if(empty($id)){
             $this->setError(_ID_REQUIRED);
+            return false;
         }
 
         /* Check ID is exist or not */
         if(!(basicValidation::Instance())->checkValidId($id)) {
             $this->setError(_ID_NOT_EXIST);
+            return false;
         }
+        return true;
     }
 
     public function validationNameExceptId($name, $id) {
-        if(!$this->lengthOfName($name, _MIN_LENGTH, _MAX_LENGTH)) {
-            $this->setError(_LENGTH_INVALID);
-        }
 
         if(empty($name)) {
             $this->setError(_SEAT_MAP_NAME_REQUIRED);
+            return false;
         }
 
         if ((basicValidation::Instance())->checkExistNameExceptId($name, $id)) {
             $this->setError(_SEAT_MAP_NAME_EXIST);
+            return false;
+        }
+
+        if(!$this->lengthOfName($name, _MIN_LENGTH, _MAX_LENGTH)) {
+            $this->setError(_LENGTH_INVALID);
+            return false;
         }
     }
 

@@ -7,6 +7,7 @@ require_once('../models/basicValidation.php');
 
 class HandleImage {
 
+    private $error;
     /**
      * This variable is described for image type of object
      * @var null
@@ -29,7 +30,12 @@ class HandleImage {
      * This variable is described for error handling
      * @var array
      */
-    private $error = [];
+    //private $error = [];
+    private $fileInputName;
+
+    private $minFileSize = null;
+    private $maxFileSize = null;
+    private $allowExtension = [];
 
     /**
      * Call this method to get singleton of Utility Object
@@ -255,4 +261,6 @@ class HandleImage {
         }
         return false;
     }
+
+
 }

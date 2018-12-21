@@ -5,7 +5,7 @@ session_start();
 require_once('../libs/custom/smarty/smartyConfig.php');
 require_once('../libs/custom/handle/constantMessage.php');
 require_once('../models/SeatMap.php');
-require_once('../models/handleImage.php');
+require_once('../models/uploadImage.php');
 require_once('../models/basicValidation.php');
 
 /* Check session */
@@ -17,37 +17,38 @@ if (isset($_SESSION["username"])) {
 
 /** Handle POST request */
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $handleImage = new HandleImage();
-    $basicValidation = new BasicValidation();
+    $error = [];
 
-    $uploadFile = $_FILES['fileToUpload'];
     $seatMapName = htmlspecialchars($_POST['seatMapName']);
-
     /** Validation seat map name */
+    $basicValidation = new BasicValidation();
     $basicValidation->validationName($seatMapName);
 
-    /** Handle and validation uploaded image */
-    $handleImage->uploadImage($uploadFile);
+    $uploadImage = new UploadImage('fileToUpload');
+    $uploadImage->setIsRequired();
+    /** Validation Image */
+    $uploadImage->setMaxFileSize(10000);
+    $uploadImage->setAllowExtension(['jpg', 'png', 'jpeg', 'gif']);
+    $uploadImage->userValidation();
+    $uploadImage->upload();
 
-    /** Get error from handleImage object and validation seat map name */
-    $error = array_merge($basicValidation->getError(), $handleImage->getImageError());
-
-    /** Save database if no error is detected */
-    if (!sizeof($error)) {
+    if (!$uploadImage->getError() && !$basicValidation->getError()) {
         $seatMap = new SeatMap();
-
-        /** Store image */
-        $handleImage->moveFileUploaded($uploadFile);
-
-        /** Save to database */
         $success = $seatMap->addSeatMap(
             $seatMapName,
-            $handleImage->getImageType(),
-            $handleImage->getImageSize(),
-            $handleImage->getImagePath()
+            $uploadImage->getImageType(),
+            $uploadImage->getImageSize(),
+            $uploadImage->getImagePath()
         );
         if (!$success) {
             array_push($error, _CAN_NOT_SAVE_DATABASE);
+        }
+    } else {
+        if(sizeof($basicValidation->getError())){
+            array_push($error, $basicValidation->getError());
+        }
+        if($uploadImage->getError()){
+            array_push($error, $uploadImage->getErrorDescription());
         }
     }
 
